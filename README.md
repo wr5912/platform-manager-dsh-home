@@ -4,4 +4,4 @@
 
 使用时将 `DSH_HOME` 指向本目录，并从匹配版本的程序仓库运行 `platform/dsh-platform prepare`。`prepare` 会按当前程序根和数据根生成被忽略的 `profiles/harness-platform/harness-platform.patch.yml`，因此仓库本身不绑定机器绝对路径。
 
-当前 Profile 要求 DSH `0.2.1-rc.5`，版本以平台程序 `runtime/adapters/dsh-container/source.lock.json` 为准。
+当前 Profile 要求 DSH `0.2.2-rc.2`，版本以平台程序 `runtime/adapters/dsh-container/source.lock.json` 为准。
