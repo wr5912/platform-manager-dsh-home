@@ -30,3 +30,5 @@ settings.yaml.imported
 profiles/**/node_modules/
 profiles/harness-platform/harness-platform.patch.yml
 *.log
+profiles/web/
+profiles/web-source/
