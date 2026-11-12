@@ -1,0 +1,32 @@
+# Runtime state
+sessions/
+logs/
+cache/
+tmp/
+runtime/
+state/
+attachments/
+storages/
+indexes/
+*.sqlite
+*.sqlite3
+
+# Credentials and local settings
+.credentials.yaml
+.credentials.*
+.openai-codex-auth.json*
+.anonymous-user-id
+settings.yaml.imported
+.env
+.env.*
+*.secret
+*.secrets
+*.token
+*.key
+*.pem
+*.llm-api-key
+
+# Generated profile links and platform overlays
+profiles/**/node_modules/
+profiles/harness-platform/harness-platform.patch.yml
+*.log
