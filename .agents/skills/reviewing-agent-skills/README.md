@@ -30,7 +30,7 @@
 
 ## 离线静态检查
 
-人工审查只需读取文件。可选检查器需要 Python 3.9+ 和 **StrictYAML 1.7.3**，与官方参考采用相同的成熟 YAML 解析库，不再用正则提取标量冒充 YAML 验证。依赖列在 [requirements.txt](scripts/requirements.txt)，由执行环境预先提供；有环境准备授权时可按该文件安装。检查器不联网、不自动安装依赖、不执行目标脚本。
+人工审查只需读取文件。可选检查器需要 Python 3.10+ 和 **StrictYAML 1.7.3**，与官方参考采用相同的成熟 YAML 解析库，不再用正则提取标量冒充 YAML 验证。依赖列在 [requirements.txt](scripts/requirements.txt)，由执行环境预先提供；有环境准备授权时可按该文件安装。检查器不联网、不自动安装依赖、不执行目标脚本。
 
 ```bash
 python3 reviewing-agent-skills/scripts/inspect_skill.py /path/to/target-skill --format json --fail-on-error

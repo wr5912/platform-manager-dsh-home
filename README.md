@@ -2,7 +2,7 @@
 
 本仓库以文件保存平台管理助手的原生 Harness：原则、技能、研究方法和稳定 Profile。Harness 资产不写入数据库。初始化后的目录同时作为实际 DSH HOME；会话、附件、身份、凭据、反馈、工作区登记和生成配置保存在这里，并由 Git 忽略。
 
-从匹配版本的程序仓库运行 `platform/dsh-platform prepare`。`hep-lab` 将本目录登记为管理助手 HOME；可用 `HARNESS_MANAGER_DSH_HOME` 显式选择。独立安装默认使用数据根的 `.local/platform-home`。同一工作区只使用解析出的这一份 HOME。
+运行环境使用 Node.js 24.9+、Python 3.10+。从匹配版本的程序仓库运行 `platform/dsh-platform prepare`。`hep-lab` 将本目录登记为管理助手 HOME；可用 `HARNESS_MANAGER_DSH_HOME` 显式选择。独立安装默认使用数据根的 `.local/platform-home`。同一工作区只使用解析出的这一份 HOME。
 
 | Profile | 来源与用途 |
 |---|---|

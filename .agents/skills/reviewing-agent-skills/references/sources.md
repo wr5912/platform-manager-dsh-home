@@ -12,7 +12,7 @@
 | [skills-ref validator](https://github.com/agentskills/agentskills/blob/69ef37e9424c0a7ea9dd2293b559e43ec8176379/skills-ref/src/skills_ref/validator.py) | 同一提交，包版本 `0.1.0` | 官方参考实现；接受 Unicode 名称，拒绝未列顶层字段，但没有覆盖全部可选字段和正文 |
 | [skills-ref parser](https://github.com/agentskills/agentskills/blob/69ef37e9424c0a7ea9dd2293b559e43ec8176379/skills-ref/src/skills_ref/parser.py) | 同一提交 | 使用 StrictYAML，标量按字符串处理；某些表示与分隔符处理有参考实现限制 |
 | [skills-ref tests](https://github.com/agentskills/agentskills/tree/69ef37e9424c0a7ea9dd2293b559e43ec8176379/skills-ref/tests) | 同一提交 | 官方用例接受未加引号的 `metadata.version: 1.0`；不能用另一解析器的隐式 float 类型误报 |
-| [skills-ref package](https://github.com/agentskills/agentskills/blob/69ef37e9424c0a7ea9dd2293b559e43ec8176379/skills-ref/pyproject.toml) | Python >=3.11；StrictYAML >=1.7.3、Click >=8.0 | 官方命令的依赖要求，与本包 Python 3.9+ 检查器分开 |
+| [skills-ref package](https://github.com/agentskills/agentskills/blob/69ef37e9424c0a7ea9dd2293b559e43ec8176379/skills-ref/pyproject.toml) | Python >=3.11；StrictYAML >=1.7.3、Click >=8.0 | 官方命令的依赖要求，与本包 Python 3.10+ 检查器分开 |
 | [YAML 1.2.2 nodes](https://yaml.org/spec/1.2.2/#3211-nodes) | YAML 1.2.2 | 映射键唯一；不能静默忽略重复字段 |
 | [Anthropic authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) | 在线文档，按核查日期 | 简洁、渐进披露、自由度、反馈与示例的官方建议；产品特有约束不自动扩展为所有运行时的通用格式 |
 

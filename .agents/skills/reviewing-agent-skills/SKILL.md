@@ -4,7 +4,7 @@ description: >-
   审查管理助手及业务 Harness 的运行 Skill，核对规范、内容、任务覆盖、路由、
   主与子智能体分工及工具调用流程。用于已有运行技能的审查、精简、合并或拆分；
   不用于平台程序研发技能或工作区共享投影治理，不默认修改被审查资产。
-compatibility: File reading is sufficient for manual review. The optional offline inspector needs Python 3.9+ and StrictYAML 1.7.3; official skills-ref has separate dependencies.
+compatibility: File reading is sufficient for manual review. The optional offline inspector needs Python 3.10+ and StrictYAML 1.7.3; official skills-ref has separate dependencies.
 metadata:
   version: "1.2.1"
 ---
