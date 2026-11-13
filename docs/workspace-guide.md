@@ -2,6 +2,12 @@
 
 管理助手的 DSH home 是本仓库。`AGENTS.md`、`.agents/skills/`、`docs/`、原生 Profile 和业务知识均以文件维护，复用 DSH 的规则、Skill、Cordis 和会话机制。Harness 不写入数据库。
 
+## 默认业务工作区
+
+平台管理助手使用数据仓库的 `config/assistant-workspace.json` 固定业务范围：默认会话 cwd 是 `harness-engineering-platform-data`，已登记的 `business-agents` 是唯一额外业务目标。前者保存登记、Experiment、Run、Decision、历史证据和运行配置；后者保存需求、设计、验收定义和当前 Harness。两个仓库保持独立 Git 工作树，不复制或嵌套到新的父目录。
+
+`harness-engineering-platform` 只作为平台工具与运行时实现来源，`platform-manager-dsh-home` 只作为管理身份、Skill 和 Profile 的装载来源；二者不登记为业务会话 cwd 或业务目标。该边界约束业务目标和默认工作区，不宣称操作系统级文件权限隔离；DSH 原生工具仍按其自身权限运行。
+
 | 位置 | 内容 |
 | --- | --- |
 | 程序仓库 `platform/`、`runtime/` | 平台程序、MCP 框架、组合执行能力、Runtime 适配器 |
