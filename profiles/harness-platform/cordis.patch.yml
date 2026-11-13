@@ -13,3 +13,7 @@
             contextWindow: 131072
             maxTokens: 8192
             reasoningEfforts: false
+
+- id: agent-instructions
+  config:
+    projectRootMarkers: [".manager-workspace", ".git"]

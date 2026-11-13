@@ -4,7 +4,7 @@
 
 ## 默认业务工作区
 
-平台管理助手使用数据仓库的 `config/assistant-workspace.json` 固定业务范围；`manager-workspace/` 是默认业务入口，包含指向两个独立 Git 工作树的受控相对链接。默认会话 cwd 仍解析到 `harness-engineering-platform-data`，已登记的 `business-agents` 是唯一额外业务目标。前者保存登记、Experiment、Run、Decision、历史证据和运行配置；后者保存需求、设计、验收定义和当前 Harness。入口目录不复制源码、不创建第二套 worktree。
+管理助手默认会话 cwd 是 `manager-workspace/`，其中 `harness-engineering-platform-data/` 与 `business-agents/` 是真实、独立的 Git 仓库。数据仓保存登记、Experiment、Run、Decision、历史证据和运行配置；业务仓保存需求、设计、验收定义和当前 Harness。`config/assistant-workspace.json` 声明工作目录与业务范围，`config/repositories.json` 锁定业务来源。
 
 `harness-engineering-platform` 只作为平台工具与运行时实现来源，`platform-manager-dsh-home` 只作为管理身份、Skill 和 Profile 的装载来源；二者不登记为业务会话 cwd 或业务目标。该边界约束业务目标和默认工作区，不宣称操作系统级文件权限隔离；DSH 原生工具仍按其自身权限运行。
 
@@ -23,13 +23,13 @@
 在程序仓库运行：
 
 ```bash
-export HARNESS_ASSET_ROOT="$HOME/hep-lab/harness-engineering-platform-data"
+export HARNESS_ASSET_ROOT="$HOME/hep-lab/manager-workspace/harness-engineering-platform-data"
 export HARNESS_MANAGER_DSH_HOME="$HOME/hep-lab/platform-manager-dsh-home"
 ./platform/dsh-platform prepare
 ./platform/dsh-platform start
 ```
 
-未显式指定管理助手 HOME 时，平台依次读取匹配当前数据根的部署定位、同级 `platform-manager-dsh-home`，最后使用数据根下的 `.local/platform-home`。账号和模型密钥保存在数据仓库忽略的 `.local/credentials/`，不放入 Harness。
+未显式指定管理助手 HOME 时，平台依次读取匹配当前数据根的部署定位、工作区外侧的 `platform-manager-dsh-home`，最后使用数据根下的 `.local/platform-home`。账号和模型密钥保存在数据仓库忽略的 `.local/credentials/`，不放入 Harness。
 
 本仓库的 `profiles/` 保存 DSH 原生 Profile 声明；依赖由匹配的 DSH 安装与平台 prepare 提供。`node_modules`、构建缓存、原生会话、设置和授权等本地数据遵循 `.gitignore`。部署备份会同时保留管理助手 HOME 与数据状态，业务实例 HOME 独立保存。
 

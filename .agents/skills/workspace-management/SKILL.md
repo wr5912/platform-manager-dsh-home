@@ -9,7 +9,7 @@ description: 定位平台管理任务的工作区、目标和当前状态，澄�
 
 ## 定位目标
 
-1. 按需调用平台工具 `context`，使用其返回的 `workspace.id`、`asset_root`、`program_root`、`local_state_root`。业务资产和管理 Skill 在数据根；程序实现在程序根；Session 与实例 HOME 在本地状态根。当前 shell 目录、旧 Session 的 cwd 不替代这些路径。
+1. 按需调用平台工具 `context`，使用其返回的 `workspace.id`、`asset_root`、`program_root`、`local_state_root`。默认 cwd 为 `business_workspace.manager_workspace_root`，数据与业务定义分别位于其两个真实仓库；管理 Skill 从原生 DSH HOME 装载，程序实现通过平台工具使用；Session 与实例 HOME 在本地状态根。当前 shell 目录、旧 Session 的 cwd 不替代这些路径。
 2. 有固定任务上下文时沿用其中的 Agent、Experiment、Run 或实例。用户指定对象时先读取其详情；没有目标且确需选择时才查询列表。页面切换不改变正在办理的目标。
 3. 查询“当前版本”时核对来源与实例装载。最大编号、配置名称或历史观察不证明当前运行状态；读到后续证据引用时按需核对。
 4. 涉及文档创建、导入、移动或导出时，先按工作区 [AGENTS.md 的业务文档归属限制](../../../AGENTS.md#业务文档归属硬性限制)确定归属和目标路径，再写入并回读；归属不明先澄清。文档维护和任务收尾同时执行[失效文档及时清除原则](../../../AGENTS.md#失效文档及时清除硬性原则)。
