@@ -4,7 +4,7 @@
 
 ## 默认业务工作区
 
-平台管理助手使用数据仓库的 `config/assistant-workspace.json` 固定业务范围：默认会话 cwd 是 `harness-engineering-platform-data`，已登记的 `business-agents` 是唯一额外业务目标。前者保存登记、Experiment、Run、Decision、历史证据和运行配置；后者保存需求、设计、验收定义和当前 Harness。两个仓库保持独立 Git 工作树，不复制或嵌套到新的父目录。
+平台管理助手使用数据仓库的 `config/assistant-workspace.json` 固定业务范围；`manager-workspace/` 是默认业务入口，包含指向两个独立 Git 工作树的受控相对链接。默认会话 cwd 仍解析到 `harness-engineering-platform-data`，已登记的 `business-agents` 是唯一额外业务目标。前者保存登记、Experiment、Run、Decision、历史证据和运行配置；后者保存需求、设计、验收定义和当前 Harness。入口目录不复制源码、不创建第二套 worktree。
 
 `harness-engineering-platform` 只作为平台工具与运行时实现来源，`platform-manager-dsh-home` 只作为管理身份、Skill 和 Profile 的装载来源；二者不登记为业务会话 cwd 或业务目标。该边界约束业务目标和默认工作区，不宣称操作系统级文件权限隔离；DSH 原生工具仍按其自身权限运行。
 

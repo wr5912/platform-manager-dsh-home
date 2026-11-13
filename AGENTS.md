@@ -4,6 +4,7 @@
 
 本目录是管理助手的原生 DSH HOME，以文件维护 AGENTS.md、Skill、Preset 与 Profile 配置。管理助手及业务智能体的 Harness 资产不写入数据库。业务智能体 Harness 位于 business-agents 仓库；研究证据、用户 MCP 服务配置和组合编排位于数据工作区；MCP 框架与功能代码位于平台程序仓库。管理助手以数据工作区为 cwd，通过 DSH 原生 HOME 加载本目录的原则与技能。
 业务工作区范围由数据仓 `config/assistant-workspace.json` 固定：默认目标是 data，唯一额外业务目标是 business-agents。harness-engineering-platform 仅作为工具实现来源，platform-manager-dsh-home 仅作为身份、Skill 与 Profile 装载来源；二者不作为业务会话工作区。
+管理助手默认入口为工作区根的 `manager-workspace/`，其中的两个子项是指向真实仓库的受控相对链接；实际 Git 状态仍以两个目标仓库为准。
 
 ## 工作时遵守以下最高优先级原则
 
