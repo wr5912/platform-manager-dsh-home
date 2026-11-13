@@ -59,13 +59,13 @@ description: "准备或继续 KEV 微调、编码检查、校准、评估与模�
 
 ## 官方资料按需用
 
-官方 `kev-finetune` 全包位于 [references/upstream/kev-finetune](references/upstream/kev-finetune/SKILL.md)；官方部署全包由本地 [kev-deploy](../kev-deploy/SKILL.md) 入口管理。两包原文、脚本、许可与 UPSTREAM.json 保持完整，嵌套 SKILL.md 仅作参考。先读本阶段适配说明，再读所需上游部分；不连续执行全部示例。脚本路径从实际包位置解析，官方命令不从当前会话 cwd 猜位置。两脚本 runtime pin 与本套原生训练 pin 的区别见 `references/training-run.md`。
+官方 `kev-finetune` 全包位于 [references/.upstream/kev-finetune](references/.upstream/kev-finetune/SKILL.md)；官方部署全包由本地 [kev-deploy](../kev-deploy/SKILL.md) 入口管理。两包原文、脚本、许可与 UPSTREAM.json 保持完整，嵌套 SKILL.md 仅作参考。先读本阶段适配说明，再读所需上游部分；不连续执行全部示例。脚本路径从实际包位置解析，官方命令不从当前会话 cwd 猜位置。两脚本 runtime pin 与本套原生训练 pin 的区别见 `references/training-run.md`。
 
 交付先说用户关心的当前结果；按需要说明数据、编码、训练、校准、服务绑定和完整比较中哪些已完成、哪些未做。不要固定逐项倾倒内部状态。存在必要行动时给出下一步；技术身份和明细保留在可查报告。模型行为验收方法见 `references/model-evaluation.md`，不能把静态测试说成 GPT-5.5 已实测通过。
 
 ## 已有微调运行的服务交接
 
-接收 kev-deploy 提供的已有 run/checkpoint、目标环境与明确授权的部署、验证或停服动作；仅按包内 [官方部署说明](references/upstream/kev-finetune/references/deploy.md) 和同包脚本处理该服务，不重新训练或扩大清理范围。返回 app/端点、checkpoint、实际验证回执与未完成项，交回 kev-deploy 继续调用方接入；结果未知先查询原 app。
+接收 kev-deploy 提供的已有 run/checkpoint、目标环境与明确授权的部署、验证或停服动作；仅按包内 [官方部署说明](references/.upstream/kev-finetune/references/deploy.md) 和同包脚本处理该服务，不重新训练或扩大清理范围。返回 app/端点、checkpoint、实际验证回执与未完成项，交回 kev-deploy 继续调用方接入；结果未知先查询原 app。
 
 ## 原生执行与平台回放取证
 

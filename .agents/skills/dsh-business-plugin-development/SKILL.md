@@ -21,13 +21,13 @@ description: 为指定业务智能体设计、开发、适配、修复或审查 
 
 从受信任的 `program_root` 读取 `runtime/adapters/dsh-container/source.lock.json`，再核对目标实际运行来源。前者是平台运行时版本声明，后者说明执行环境；不把本技能的上游固定提交当成所有实例的当前版本。
 
-优先使用目标安装中已核实来源和版本的官方 Skill。不可直接加载时，读取下表中的完整原文；先比对 [UPSTREAM.json](references/upstream/UPSTREAM.json) 的固定提交与目标版本。副本是离线参考，不自动提供同名工具或运行能力。版本不匹配时先取得匹配资料并核对差异；取不到就说明受影响步骤，不凭记忆编造 API 或修改官方要求来迁就环境。
+优先使用目标安装中已核实来源和版本的官方 Skill。不可直接加载时，读取下表中的完整原文；先比对 [UPSTREAM.json](references/.upstream/UPSTREAM.json) 的固定提交与目标版本。副本是离线参考，不自动提供同名工具或运行能力。版本不匹配时先取得匹配资料并核对差异；取不到就说明受影响步骤，不凭记忆编造 API 或修改官方要求来迁就环境。
 
 | 任务 | 官方原文 |
 |---|---|
-| 插件设计、实现、安装、调试和验证；进入插件任务先读 | [cordis-plugin-development](references/upstream/cordis-plugin-development/SKILL.md) |
-| 决定 Host/Preset 放置、创建或修改 Preset | [editing-cordis-compositions](references/upstream/editing-cordis-compositions/SKILL.md) |
-| 编写 Patch、核对 Loader 方言或查插件包 | [cordis-composition-reference](references/upstream/cordis-composition-reference/SKILL.md) |
+| 插件设计、实现、安装、调试和验证；进入插件任务先读 | [cordis-plugin-development](references/.upstream/cordis-plugin-development/SKILL.md) |
+| 决定 Host/Preset 放置、创建或修改 Preset | [editing-cordis-compositions](references/.upstream/editing-cordis-compositions/SKILL.md) |
+| 编写 Patch、核对 Loader 方言或查插件包 | [cordis-composition-reference](references/.upstream/cordis-composition-reference/SKILL.md) |
 
 上游要求加载另一项官方 Skill 时，优先加载已核实的同版本技能；否则按本表读取相应原文，不调用未注册的技能名。每份原文里的 `references/` 和 `templates/` 都相对该官方 Skill 自己的目录解析，不能相对本入口。按原文的任务索引补读所需参考，不一次读取全部包目录。
 
@@ -61,4 +61,4 @@ description: 为指定业务智能体设计、开发、适配、修复或审查 
 
 ## 上游维护
 
-`references/upstream/` 保存三个官方 Skill 的完整原文、参考和模板，以及原许可证；来源和逐文件摘要只维护在 `UPSTREAM.json`。它们作为参考资料保留，不另行登记成管理任务。升级时核对目标 DSH 来源，再整体更新相应官方子树和清单，保留许可；不直接修改官方副本补平台规则。本入口或现有平台技能负责平台适配。
+`references/.upstream/` 保存三个官方 Skill 的完整原文、参考和模板，以及原许可证；来源和逐文件摘要只维护在 `UPSTREAM.json`。它们作为参考资料保留，不另行登记成管理任务。升级时核对目标 DSH 来源，再整体更新相应官方子树和清单，保留许可；不直接修改官方副本补平台规则。本入口或现有平台技能负责平台适配。

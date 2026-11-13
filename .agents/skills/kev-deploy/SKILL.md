@@ -11,13 +11,13 @@ description: "部署或运维已有 Kev checkpoint：获取 TypeSafe/System One 
 
 | 当前对象 | 按需读取 | 本次办理范围 |
 |---|---|---|
-| 公共或自定义 Hub checkpoint，选择 Modal | [官方部署 Skill](references/upstream/kev-deploy/SKILL.md) 与其 scripts/kev_serve.py | 选定模型/版本、资源和认证后部署、验证 |
+| 公共或自定义 Hub checkpoint，选择 Modal | [官方部署 Skill](references/.upstream/kev-deploy/SKILL.md) 与其 scripts/kev_serve.py | 选定模型/版本、资源和认证后部署、验证 |
 | 已在官方 Modal 微调卷中的 run | [微调运行的服务交接](../kev-training/SKILL.md#已有微调运行的服务交接) | 把已有 run、目标环境和已授权动作交给 kev-training 的服务路径，取得端点与验证回执后继续；不重新训练 |
 | 已有本地 checkpoint，选择本地 CUDA 服务 | [原生 CUDA 接入](references/native-cuda.md) | 沿用已选环境的真实服务入口，核对所用接入合同与实际证明 |
 | 已有服务，只验证、调整保温或停服 | 对应部署路径中的验证/配置/清理部分 | 直接处理指定服务，不重新训练或默认部署另一模型 |
 | 需要微调、生成训练数据或评估训练工件 | `kev-training` | 交接所需训练阶段 |
 
-官方部署包完整保存在 `references/upstream/kev-deploy/`，其 SKILL.md 是参考而非第二个注册入口。先读本地边界，再读当前所需上游部分；不连续执行部署、接入和清理的全部示例。
+官方部署包完整保存在 `references/.upstream/kev-deploy/`，其 SKILL.md 是参考而非第二个注册入口。先读本地边界，再读当前所需上游部分；不连续执行部署、接入和清理的全部示例。
 
 ## 执行与核对
 
@@ -32,4 +32,4 @@ description: "部署或运维已有 Kev checkpoint：获取 TypeSafe/System One 
 
 ## 固定官方来源
 
-完整文件、许可与原始来源说明见 [UPSTREAM.json](references/upstream/kev-deploy/UPSTREAM.json) 和 [UPSTREAM.md](references/upstream/kev-deploy/UPSTREAM.md)。包内相对布局保持不变；官方 `../../runs/...` 引用的三份报告按 [固定上游提交](https://github.com/jaredpalmer/kev/tree/2074cc44256200bb37540103fa4572901faa10f3/runs/modal-http-4b-h100) 原字节保存于 `references/runs/modal-http-4b-h100/`，供离线阅读；这些是上游测试证据，不是本平台的部署验收结果。适配只维护在本入口或单独文件，不改官方原文、脚本或来源记录。
+完整文件、许可与原始来源说明见 [UPSTREAM.json](references/.upstream/kev-deploy/UPSTREAM.json) 和 [UPSTREAM.md](references/.upstream/kev-deploy/UPSTREAM.md)。包内相对布局保持不变；官方 `../../runs/...` 引用的三份报告按 [固定上游提交](https://github.com/jaredpalmer/kev/tree/2074cc44256200bb37540103fa4572901faa10f3/runs/modal-http-4b-h100) 原字节保存于 `references/runs/modal-http-4b-h100/`，供离线阅读；这些是上游测试证据，不是本平台的部署验收结果。适配只维护在本入口或单独文件，不改官方原文、脚本或来源记录。

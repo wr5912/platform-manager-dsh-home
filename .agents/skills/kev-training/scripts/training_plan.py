@@ -31,7 +31,7 @@ EXECUTION_SWITCHES = {"HF_HUB_OFFLINE": ("0", "1"), "TRANSFORMERS_OFFLINE": ("0"
                       "UV_NO_SYNC": ("0", "1"), "USE_HUB_KERNELS": ("NO", "YES")}
 PACKAGE = Path(__file__).resolve().parents[1]
 VENDOR_ROOTS = {
-    "kev-finetune": PACKAGE / "references/upstream/kev-finetune",
+    "kev-finetune": PACKAGE / "references/.upstream/kev-finetune",
 }
 HEX40 = re.compile(r"[0-9a-f]{40}\Z")
 HEX64 = re.compile(r"[0-9a-f]{64}\Z")

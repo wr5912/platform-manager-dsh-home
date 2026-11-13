@@ -24,7 +24,7 @@ KEV 套件保留 5 个顶层入口；与已有 compute-variant-research、decisi
 | kev-dataset-build | kev-trace-pipeline → [编译与切分](../../.agents/skills/kev-trace-pipeline/references/stages/build.md) |
 | kev-finetune | kev-training → [官方 Modal 工作负载路径](../../.agents/skills/kev-training/references/modal-workload.md) |
 
-旧名称不再注册为 Skill，也没有新增运行时别名。官方两包固定在 [jaredpalmer/kev@2074cc4](https://github.com/jaredpalmer/kev/tree/2074cc44256200bb37540103fa4572901faa10f3/skills)，完整存于 `kev-training/references/upstream/kev-finetune/` 和 `kev-deploy/references/upstream/kev-deploy/`。16 个上游文件、许可和本地 UPSTREAM.json/UPSTREAM.md 原样保留；嵌套 SKILL.md 只作参考。包外相对链接按固定上游仓库解析，不声称报告已包含在本地。适配层单独维护。
+旧名称不再注册为 Skill，也没有新增运行时别名。官方两包固定在 [jaredpalmer/kev@2074cc4](https://github.com/jaredpalmer/kev/tree/2074cc44256200bb37540103fa4572901faa10f3/skills)，完整存于 `kev-training/references/.upstream/kev-finetune/` 和 `kev-deploy/references/.upstream/kev-deploy/`。16 个上游文件、许可和本地 UPSTREAM.json/UPSTREAM.md 原样保留；嵌套 SKILL.md 只作参考。包外相对链接按固定上游仓库解析，不声称报告已包含在本地。适配层单独维护。
 
 ## 当前按钮如何工作
 

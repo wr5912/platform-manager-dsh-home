@@ -1,13 +1,9 @@
 ---
 name: reviewing-agent-skills
 description: >-
-  Strictly reviews existing Agent Skills and skill sets for official compliance,
-  content quality, activation, task coverage, skill count and routing, main-agent
-  or subagent responsibility, and call-flow complexity. Use when asked to audit,
-  troubleshoot, simplify, merge or split skills, decide which skills a subagent
-  should use, or assess tool/workflow boundaries. Produces source-backed findings,
-  coverage records, minimal revisions, and validation cases. Not for creating a
-  new skill or agent from scratch or silently modifying the reviewed assets.
+  审查管理助手及业务 Harness 的运行 Skill，核对规范、内容、任务覆盖、路由、
+  主与子智能体分工及工具调用流程。用于已有运行技能的审查、精简、合并或拆分；
+  不用于平台程序研发技能或工作区共享投影治理，不默认修改被审查资产。
 compatibility: File reading is sufficient for manual review. The optional offline inspector needs Python 3.9+ and StrictYAML 1.7.3; official skills-ref has separate dependencies.
 metadata:
   version: "1.2.1"
@@ -16,6 +12,8 @@ metadata:
 # Reviewing Agent Skills
 
 ## 目标与边界
+
+本入口维护管理助手与业务运行 Skill 的审查方法；平台程序研发 Skill 使用[程序仓审查入口](https://github.com/wr5912/harness-engineering-platform/blob/main/.agents/skills/reviewing-agent-skills/SKILL.md)，共享开发投影治理使用工作区 `hep-skill-governance`。
 
 严格审查 Skill 的规范性、内容完整性和工整性，并按本次范围判断技能集合、主/子智能体分工、调用流程及实际收益。结论必须有来源、定位及检查覆盖记录；格式可读、静态零命中、官方验证器成功、原生加载成功和业务有效分别判断。
 
@@ -46,7 +44,7 @@ metadata:
 python3 scripts/inspect_skill.py /path/to/target-skill --format json --fail-on-error
 ```
 
-本平台固定的 DSH `0.2.1-rc.2` 目录包可加 `--profile dsh`；其他版本先核对源码，扁平 Markdown 等非目录包形态单独按目标合同审查。依赖见 [requirements](scripts/requirements.txt)，入口见 [检查器](scripts/inspect_skill.py)。
+检查器的 `--profile dsh` 适配 DSH `0.2.1-rc.2` 目录包；目标运行时的实际版本先从平台锁定和安装结果确认，其他版本核对源码后使用，扁平 Markdown 等非目录包形态单独按目标合同审查。依赖见 [requirements](scripts/requirements.txt)，入口见 [检查器](scripts/inspect_skill.py)。
 
 检查器仅报告单目录可机械检查的结果和人工复核线索，不执行集合路由、主/子智能体分工或调用流分析；`REVIEW_REQUIRED` 不是完整审查通过，`BLOCKED` 不是通过。官方验证器、原生装载及正文语义仍须各自取证；DSH 支持的扩展与通用参考工具的可移植性结果分别说明。
 
