@@ -28,7 +28,15 @@ settings.yaml.imported
 
 # Generated profile links and platform overlays
 profiles/**/node_modules/
+profiles/**/cordis.yml
 profiles/harness-platform/harness-platform.patch.yml
+profiles/harness-platform/harness-platform.sources.json
+.local/
+backups/
+credentials.json
+credentials.*
+profiles/**/credentials/
+profiles/**/secrets/
 *.log
 profiles/web/
 profiles/web-source/
