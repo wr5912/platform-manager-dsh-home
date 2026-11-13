@@ -43,6 +43,6 @@ description: 整理智能体版本用途和特性，维护已授权目标的说�
 
 修改已有业务语义使用 `harness-evolution`；多来源集成使用 `harness-experiment-fusion`；独立评测使用 `research-eval`；算力变体使用 `compute-variant-research`；需要装配、修复和实例交付使用 `task-builder`。仅咨询、整理特性或已有证据不因此创建 Experiment。已加载对应技能则从当前步骤继续，不重新启动相同流程。
 
-涉及 MCP/API 时先按 `mcp-composition` 办理实际连接与编排。工具成功、Mock 成功、研究结论和生产使用分别说明；资产、实例和状态可直接通过平台 GUI/CLI 办理，Research Release 使用平台 `release` 入口，本技能不提供程序开发、任意 Git 或长期自主调度入口。
+涉及 MCP/API 时先按 `mcp-composition` 办理实际连接与编排。工具成功、Mock 成功、研究结论和生产使用分别说明；资产、实例和状态可直接通过平台 GUI/CLI 办理，Research Release 仍按当前仓库校验合同单独核对，本技能不提供程序开发、任意 Git 或长期自主调度入口。
 
 仅调整 Case 顺序时直接按[场景内排序合同](../evaluation-review/SKILL.md#交付前反查与写入交接)办理，只提交 Case ID 顺序与当前摘要，不重写正文。
