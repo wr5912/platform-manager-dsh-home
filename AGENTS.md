@@ -77,13 +77,13 @@
 
 ## 资产与记录
 
-`.agents/skills/` 维护管理助手业务技能；Candidate 内技能属于目标业务智能体，禁止递归当作管理助手技能加载。`agents/<agent-id>` 保存可提取的业务主线入口，`agents/<agent-id>/manifest.yaml` 和 `evaluation.md` 保存登记与评测口径；`evolution/` 保存 Experiment、Run、决策样本和历史输入，`config/` 保存当前配置，`extensions/` 保存声明启用的业务扩展。只创建有真实内容的目录，不维护可变 `current/`、业务源码 `versions/` 或重复 Baseline 树。
+`.agents/skills/` 维护管理助手业务技能；Candidate 内技能属于目标业务智能体，禁止递归当作管理助手技能加载。business-agents 的 `agents/<agent-id>` 保存可提取的业务设计、需求、验收口径和主线入口，`harness.yaml` 与 DSH 资产负责装载，`evaluation.md` 保存当前业务 Case；数据仓的 `agents/<agent-id>/manifest.yaml` 只保存动态登记，`evolution/` 保存 Experiment、Run、决策样本和历史输入，`config/` 保存当前配置，`extensions/` 保存声明启用的业务扩展。只创建有真实内容的目录，不维护可变 `current/`、业务源码 `versions/` 或重复 Baseline 树。
 
 ### 业务文档归属（硬性限制）
 
-- 特定业务智能体的需求说明、设计方案、实施计划、问题记录、使用说明及其 HTML、PDF 等导出件，统一放在 `agents/<agent-id>/docs/`，可按实际内容设置子目录。根级 `docs/` 只保存跨智能体共用的管理与研究方法，不得存放具体智能体的业务文档，也不得作为临时落点。
-- 写入、导入、复制、移动或导出文档前，先核对工作区、所属智能体及其 `manifest.yaml`。从固定 Agent、Experiment 或实例上下文办理时，文档归属必须与该对象一致；归属不明先澄清，不猜测智能体，也不退回根级 `docs/`。具体业务文档涉及多个智能体时选定主责智能体保存唯一正文，其他位置只引用；跨智能体通用方法才放根级。
-- `agents/<agent-id>/evaluation.md`、测试源码、Candidate、Run、Decision、原始输入与运行制品继续遵循各自的专用合同，不因本规则搬进 `docs/`，不复制成另一份可编辑事实源。共用方法中的业务示例不因此成为某个智能体的专属文档。
+- 特定业务智能体的需求说明、设计方案、实施计划和当前验收定义统一放在 business-agents 的 `agents/<agent-id>/`；数据仓的同名目录只保存历史研究资料、运行证据和归档文档。根级 `docs/` 只保存跨智能体共用的管理与研究方法，不得复制当前业务定义。
+- 写入、导入、复制、移动或导出文档前，先核对工作区、所属智能体及 business-agents 的 `harness.yaml`/`evaluation.md`。从固定 Agent、Experiment 或实例上下文办理时，文档归属必须与该对象一致；归属不明先澄清，不猜测智能体，也不退回根级 `docs/`。具体业务文档涉及多个智能体时选定主责智能体保存唯一正文，其他位置只引用；跨智能体通用方法才放根级。
+- business-agents 的 `evaluation.md`、测试源码、Candidate、Run、Decision、原始输入与运行制品继续遵循各自的专用合同，不复制成另一份可编辑事实源；数据仓只保存动态登记和历史运行事实。共用方法中的业务示例不因此成为某个智能体的专属文档。
 - 管理助手使用平台工具或原生文件工具时均遵守本限制。保存前核对目标路径，保存后回读实际位置与内容；发现误放时报告原路径、归属和正确路径，在授权范围内迁移并同步当前引用，不静默删除、覆盖或改写历史证据。
 
 程序校验与验收设计见[业务文档归属与校验](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/03_存储架构与数据契约.md#业务文档归属与校验)。规则已写入不代表所有工具入口已经具备强制拦截，实际实现与验证状态以程序仓库验收矩阵为准。
