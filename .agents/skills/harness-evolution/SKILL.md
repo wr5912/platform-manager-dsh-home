@@ -30,4 +30,4 @@ description: 通过平台工具创建、修改和审查 DSH Harness Experiment�
 
 按[观察与 Decision 保存合同](references/decision-update.md)保存本轮证据与结论，使用当前摘要更新并回读。评测后继续当前目标，不为保存结论重新创建 Experiment；查询任务仅报告，不额外写入。
 
-当前管理平台只支持固定 Git 来源的实际派生路径，没有 Research Release 创建、发布或 `release:<id>` 运行入口。值得长期保留的版本可提出复现需求，不能虚构发布成功。`adopt` 也不等于实例切换或生产发布。
+固定 Git 来源的派生、Research Release 创建与校验均通过平台公开入口办理；需要复现已发布版本时使用 `platform/hep release` 读取并校验 `release:<id>` 来源。管理助手可以提供可选的语义协助，但资产、Release、实例和状态也必须能由平台 GUI/CLI 直接完成。`adopt` 仍不等于实例切换或生产发布。
