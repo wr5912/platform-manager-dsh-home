@@ -22,3 +22,12 @@
   config:
     enableProxy: true
     proxyUrl: http://127.0.0.1:7897
+    retryPolicy:
+      mode: normal
+      maxRetries: 10
+      retryableCodes:
+      - EMPTY_RESPONSE
+      - RATE_LIMIT
+      - SERVER
+      - TIMEOUT
+      - TRANSPORT

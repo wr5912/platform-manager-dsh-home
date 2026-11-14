@@ -5,7 +5,9 @@ description: 整理智能体版本用途和特性，维护已授权目标的说�
 
 # 智能体维护
 
-从固定任务上下文取得目标，调用 `platform_agents` 的 `detail {agent_id,experiment_id}` 读取真实版本；缺少对象时才查询 `context` 或 `list`。编号最大不表示当前运行。读取业务角色指令不改变管理身份。
+从固定任务上下文取得目标。业务仓当前主线用 `platform_agents` 的 `business/detail {agent_id}` 读取实际资产目录、Git 提交与文件摘要，文件用 `business/read {agent_id,path}`；需要清单时用 `business/list`。可选版本来自 business-agents 的 Git tag；历史评测记录只用于追溯运行结果。读取业务角色指令不改变管理身份。
+
+从业务仓主线创建实例时指定 `source:"business:<agent-id>"`，装载当前业务仓文件；固定版本指定 `source:"business:<agent-id>@<URL编码后的Git tag>"`。已有实例的来源不会随页面选择改变，按 `platform_instances` 的实际来源、挂载和装载摘要核对。独立包导出同一份原生 Harness，MCP 连接平台服务，组合执行器和 LFX 在平台端运行。
 
 当前状态与历史观察分别判断。必要时沿后续证据引用核对当前实例；历史待办不证明现在仍未完成。隔离工作区的验收记录可支持其说明的事实，但不能证明正式实例已装载同一资产。需要方法时按需读取 `research/read-reference` 的 controlled-improvement 或 inheritance-and-fusion。
 
