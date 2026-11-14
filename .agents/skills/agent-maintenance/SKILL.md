@@ -39,6 +39,15 @@ description: 整理智能体版本用途和特性，维护已授权目标的说�
 
 目录、二进制、截断内容及不支持的删除或重命名不能用空文件冒充完成。校验失败时按回执修正后重新预览、重试，禁止转用原生文件写入绕过平台校验。回执未知先查询实际状态，摘要冲突重新读取；无法完整处理时停在具体缺口。
 
+## 页面与浏览器核验
+
+涉及平台页面或已登记业务实例的页面加载、交互、插件激活、入口可达性或界面证据时，使用平台原生 `platform_browser` 的 `inspect`。该能力由平台锁定的 DSH Runtime 提供，不在管理助手 HOME 另装 Playwright 或 Chromium。
+
+1. 目标使用 `target: {kind: "platform", page: ...}` 或 `target: {kind: "instance", name: ...}`；页面枚举和实例名称先从当前工具回执取得，不猜测入口 URL。
+2. 操作只使用合同允许的 `role`、`label`、`text`、`placeholder` 或 `test_id` 定位器，以及必要的 `click`、`fill`、`press`、`wait_for`；需要证据时请求 `viewport`、`full_page` 或元素截图。
+3. 先核对 API/实例状态，再进行 UI smoke。浏览器回执只能证明页面和交互层结果；业务功能、模型效果和外部服务仍须用对应 API、真实 Run 或 MCP 回执验证。
+4. 保存并引用回执中的 snapshot、actions、screenshot 和 trace 证据。认证、镜像或驱动失败时修复平台运行配置并重试，不绕过平台工具调用任意 shell 浏览器。
+
 ## 进入研究改进
 
 修改已有业务语义使用 `harness-evolution`；多来源集成使用 `harness-experiment-fusion`；独立评测使用 `research-eval`；算力变体使用 `compute-variant-research`；需要装配、修复和实例交付使用 `task-builder`。仅咨询、整理特性或已有证据不因此创建 Experiment。已加载对应技能则从当前步骤继续，不重新启动相同流程。
