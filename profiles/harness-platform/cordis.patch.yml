@@ -17,3 +17,8 @@
 - id: agent-instructions
   config:
     projectRootMarkers: [".manager-workspace", ".git"]
+
+- id: llm-openai-codex
+  config:
+    enableProxy: true
+    proxyUrl: http://127.0.0.1:7897

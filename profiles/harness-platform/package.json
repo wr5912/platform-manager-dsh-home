@@ -1,13 +1,16 @@
 {
   "name": "dsh-profile-harness-platform",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "dsh-codex-connect": "0.2.0-alpha.14"
+  },
   "dsh": {
     "profile": {
       "bundles": [
         "@deepseek-ai/dsh-base",
         "@deepseek-ai/dsh-web-app",
-        "@ai-agent-harness/harness-platform"
+        "@ai-agent-harness/harness-platform",
+        "dsh-codex-connect"
       ],
       "patchReload": "startup"
     }
