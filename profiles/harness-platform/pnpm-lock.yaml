@@ -11,6 +11,9 @@ importers:
       dsh-codex-connect:
         specifier: 0.2.0-alpha.14
         version: 0.2.0-alpha.14(ws@8.23.0)
+      dsh-think-zh:
+        specifier: github:Len7183/DSH-Think-zh#2ba0a1e338410b44c07f221087907e210ad65b59
+        version: https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59(@deepseek-ai/schemastery@3.18.4)
 
 packages:
 
@@ -285,6 +288,16 @@ packages:
       react: ^18.2.0
     peerDependenciesMeta:
       '@deepseek-ai/dsh-commands':
+        optional: true
+
+  dsh-think-zh@https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59:
+    resolution: {tarball: https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59}
+    version: 1.1.1
+    engines: {node: '>=22.19'}
+    peerDependencies:
+      '@deepseek-ai/schemastery': '>=3.18.3'
+    peerDependenciesMeta:
+      '@deepseek-ai/schemastery':
         optional: true
 
   ecdsa-sig-formatter@1.0.11:
@@ -794,6 +807,10 @@ snapshots:
       - utf-8-validate
       - ws
       - zod
+
+  dsh-think-zh@https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59(@deepseek-ai/schemastery@3.18.4):
+    optionalDependencies:
+      '@deepseek-ai/schemastery': 3.18.4
 
   ecdsa-sig-formatter@1.0.11:
     dependencies:
