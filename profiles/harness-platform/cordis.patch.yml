@@ -43,6 +43,6 @@
 - id: agent-default-model
   name: "@deepseek-ai/dsh-agent-default-model"
   config:
-    provider: openai-codex
-    model: gpt-6.1-sol
-    reasoningEffort: max
+    provider: xiaomi-token-plan-cn
+    model: mimo-v2.6-flash
+    reasoningEffort: off
