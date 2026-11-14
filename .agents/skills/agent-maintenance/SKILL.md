@@ -9,7 +9,7 @@ description: 整理智能体版本用途和特性，维护已授权目标的说�
 
 从业务仓主线创建实例时指定 `source:"business:<agent-id>"`，装载当前业务仓文件；固定版本指定 `source:"business:<agent-id>@<URL编码后的Git tag>"`。已有实例的来源不会随页面选择改变，按 `platform_instances` 的实际来源、挂载和装载摘要核对。独立包导出同一份原生 Harness，MCP 连接平台服务，组合执行器和 LFX 在平台端运行。
 
-独立包的原生 MCP 分组连接绑定导出时的平台地址。通知订阅等公开环境参数从业务 Harness 的 `dsh/workspace/deployment.env.example` 进入包内 `config/deployment.env`；修改后执行 `./agent restart`，模型与 MCP 凭据用 `./agent configure` 设置。JSON 配置使用 UTF-8、两空格缩进和可读中文。验收通知卡片时分别核对订阅和权威状态读取，并实际点击新鲜的待研判卡片，检查原生输入框填入、已有草稿保留、状态颜色及没有自动发送；页面加载成功不能替代这些交互结果。
+独立包的原生 MCP 分组连接绑定导出时的平台地址。通知订阅等公开环境参数从业务 Harness 的 `dsh/workspace/deployment.env.example` 进入包内 `config/deployment.env`；修改后执行 `./agent restart`，模型与 MCP 凭据用 `./agent configure` 设置。网络安全运营专家可在同一 `config/deployment.env` 中同时设置 `THREAT_ANALYSIS_MODEL_PROVIDER` 与 `THREAT_ANALYSIS_MODEL`，可选 `THREAT_ANALYSIS_REASONING_EFFORT`；子智能体和取证后的研判推理共用该原生 Provider。两项留空继承主模型，Provider 地址和凭据通过原生模型配置统一维护，重启后用于新任务。JSON 配置使用 UTF-8、两空格缩进和可读中文。验收通知卡片时分别核对订阅和权威状态读取，并实际点击新鲜的待研判卡片，检查原生输入框填入、已有草稿保留、状态颜色及没有自动发送；页面加载成功不能替代这些交互结果。
 
 当前状态与历史观察分别判断。必要时沿后续证据引用核对当前实例；历史待办不证明现在仍未完成。隔离工作区的验收记录可支持其说明的事实，但不能证明正式实例已装载同一资产。需要方法时按需读取 `research/read-reference` 的 controlled-improvement 或 inheritance-and-fusion。
 
