@@ -17,6 +17,7 @@ __pycache__/
 .credentials.yaml
 .credentials.*
 .openai-codex-auth.json*
+.openai-codex-trusted-origins.json
 .anonymous-user-id
 settings.yaml.imported
 .env
