@@ -35,40 +35,6 @@ hep_update_args+=(--minimal-data)
 
 不默认追加 `--install-deps` 或 `--start`；确有需要时按工具合同将选项加入同一参数组，重新预检再应用。不能省略远端目标参数后误用本地源码更新入口。整库更新不包含未提交文件；不要用 `--allow-dirty` 或不存在的 `--data-only` 试图改变该合同。
 
-## 指定实例的 Candidate 更新
+## 指定实例的业务 source 更新
 
-先通过实际平台工具核对实例的 Agent、完整 Experiment ID、数据根与装载来源，读取远端拟替换文件 SHA-256。只为已确认的新文件填写 `null`；无法读取不等于不存在。创建本地 JSON 清单，替换全部示意值：
-
-```json
-{
-  "agentId": "<实际 Agent ID>",
-  "experimentId": "<完整 Experiment ID>",
-  "instance": "<实际实例名>",
-  "files": [
-    {
-      "path": "candidate/dsh/workspace/AGENTS.md",
-      "expectedSha256": "<远端更新前文件的64位SHA256>"
-    }
-  ]
-}
-```
-
-文件路径相对 Experiment，只允许当前工具支持的 `candidate/dsh/` 与构建回执 `change.yaml`；管理助手根级 Skill、现场配置、凭据、Session 不在该范围。Managed TypeScript 先通过受控资产构建，再将源码、ESM 与回执作为一致的一组交付。
-
-```bash
-hep_agent_update_args=(agent-update
-  --manifest "$hep_update_manifest"
-  --data-root "$hep_source_data_root"
-  --ssh "$hep_ssh_target"
-  --prefix "$hep_remote_program_root"
-  --remote-data-root "$hep_remote_data_root")
-"$hep_tool_root/platform/dsh-deploy" "${hep_agent_update_args[@]}" --dry-run
-```
-
-预检通过且仍在授权内，再执行：
-
-```bash
-"$hep_tool_root/platform/dsh-deploy" "${hep_agent_update_args[@]}"
-```
-
-之后按技能正文核对装载，不因文件传输成功就结束。断线先查该工具回执，`recovery-required` 保留现场和备份交由恢复，不用空摘要或手工覆盖绕过。
+旧 Experiment/Candidate 更新入口已移除。业务实例更新必须使用程序仓库当前支持的 `business:<agent-id>@<commit>` source contract，通过平台 pack/update 合同生成并校验完整业务快照；本 Skill 不再构造 `experimentId`、Candidate 相对路径或旧 `agent-update` 清单。

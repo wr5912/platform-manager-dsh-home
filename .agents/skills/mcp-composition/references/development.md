@@ -1,6 +1,6 @@
 # 工具组合编排开发方法
 
-供平台管理助手和研发工具开发、优化及验证组合时按需阅读。办理动作使用 [`mcp-composition`](../SKILL.md)；对象归属遵循[数据工作区原则](../../../../AGENTS.md#组合编排资产自包含)。本文维护方法和经验，接口字段、组件实现及运行结果各引用自己的事实源。
+供平台管理助手和研发工具开发、优化及验证组合时按需阅读。办理动作使用 [`mcp-composition`](../SKILL.md)；对象归属遵循[数据工作区原则](https://github.com/wr5912/harness-engineering-platform-data/blob/main/AGENTS.md#组合编排资产自包含)。本文维护方法和经验，接口字段、组件实现及运行结果各引用自己的事实源。
 
 ## 执行与资产归属
 
@@ -57,7 +57,7 @@
 
 冻结草稿绑定使用实例的实际来源。Harness 修改后，先完成实例重载、来源绑定更新及业务实例工具发现，再启动验收会话；仅有 `current=loaded` 不能证明草稿绑定仍有效，不在管理准备任务完成前抢跑。
 
-研发复用[官方运行时回归](https://github.com/wr5912/harness-engineering-platform/blob/main/platform/mcp/lfx/test_runtime.py)、[发布资产回归](https://github.com/wr5912/harness-engineering-platform/blob/main/platform/plugin/test/mcp-lfx-assets.test.mjs)和[巡检实际流程回归](../../../../mcp/tests/test.mjs)，不在文档复制测试实现。画布验证在实际页面核对当前选择的草稿或固定版本，以及分支、批量内部流程、子版本和源码来源；截图或页面打开不能代替运行证据。
+研发复用[官方运行时回归](https://github.com/wr5912/harness-engineering-platform/blob/main/platform/mcp/lfx/test_runtime.py)、[发布资产回归](https://github.com/wr5912/harness-engineering-platform/blob/main/platform/plugin/test/mcp-lfx-assets.test.mjs)和[巡检实际流程回归](https://github.com/wr5912/harness-engineering-platform/tree/main/platform/plugin/test)，不在文档复制测试实现。画布验证在实际页面核对当前选择的草稿或固定版本，以及分支、批量内部流程、子版本和源码来源；截图或页面打开不能代替运行证据。
 
 ## 已验证的经验与陷阱
 
@@ -65,9 +65,9 @@
 | --- | --- | --- |
 | 分别维护执行代码和画布节点，无法保证控制流程一致 | 同一原生 flow 供官方执行器和画布读取，发布冻结流程、模块和子版本 | [资产与画布实现](https://github.com/wr5912/harness-engineering-platform/blob/main/platform/plugin/src/mcp/lfx-assets.ts) |
 | 互斥出口直接共享消费者，或浅/深终止路径汇入同一总出口，导致混入未选值或被跳过的深分支依赖挂住 | 浅/深终止路径使用各自独立的原生 terminal output，可复用同一 TS 结果函数；只有实际存在共同后续步骤时才经独占分支顶点作局部原生列表汇合，严格核对输入数量。真实图覆盖早退、错误、深层及跨 Run 查询，断言每次仅一个有效终态；不去重掩盖、不删断言、不补丁官方 scheduler | [官方分支回归](https://github.com/wr5912/harness-engineering-platform/blob/main/platform/mcp/lfx/test_runtime.py) |
-| 父流程汇总输入名 `status` 与 LFX 保留字段冲突，dry 通过仍执行失败 | 修正原生组件输入、模板和边的目标端口，并用官方运行时执行父流程；不手工维护另一套保留字表 | [巡检流程回归](../../../../mcp/tests/test.mjs) |
+| 父流程汇总输入名 `status` 与 LFX 保留字段冲突，dry 通过仍执行失败 | 修正原生组件输入、模板和边的目标端口，并用官方运行时执行父流程；不手工维护另一套保留字表 | [巡检流程回归](https://github.com/wr5912/harness-engineering-platform/tree/main/platform/plugin/test) |
 | localhost 回调受机器代理环境影响，流程服务可启动但流式调用失败 | 平台内部回调的网络策略与外部连接分开处理，验证官方 HTTP/流式入口 | [运行时回归](https://github.com/wr5912/harness-engineering-platform/blob/main/platform/mcp/lfx/test_runtime.py) |
-| 资产或规则缺失、上游响应异常被当作正常或空结果 | 校验真实响应结构，保留 failed、unknown 和未覆盖范围，汇总不能抹去子项失败 | [巡检结果合同](../../../../mcp/src/inspection/index.ts) |
+| 资产或规则缺失、上游响应异常被当作正常或空结果 | 校验真实响应结构，保留 failed、unknown 和未覆盖范围，汇总不能抹去子项失败 | [巡检结果合同](https://github.com/wr5912/harness-engineering-platform/blob/main/platform/mcp/security-operations/src/reports/inspection.ts) |
 | 原生运行报告有事实，节点明细却为空 | 区分节点进度与业务结果，从已保存结果解析父子明细并核对分页，不为查询重复执行或复制全量结果到各节点 | [嵌套明细回归](https://github.com/wr5912/harness-engineering-platform/blob/main/platform/plugin/test/mcp-workflow-runs.test.mjs) |
 | 助手猜测图或源码查询版本字段，错误后反复尝试 | 查询当前动作合同，分别使用当前选择和固定版本身份，不混用不同动作的选择方式；合同与实现冲突时保留回执交研发修正 | `platform_mcp describe` 的当前合同 |
 | 发布成功、进程启动或文件更新被写成完整验收 | 分别核对固定发布包、实际加载、真实调用和使用方任务；未知结果先回读 | 上表各层证据 |

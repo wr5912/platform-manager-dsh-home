@@ -16,7 +16,7 @@
 
 ### Case
 
-版本及变体共用的业务内容、稳定能力命名和环境适配遵循[评测口径与输入](../../../../docs/harness-research/evaluation-and-evidence.md#口径与输入)。本合同维护文件与执行快照格式。
+版本及变体共用的业务内容、稳定能力命名和环境适配遵循[评测口径与输入](https://github.com/wr5912/harness-engineering-platform-data/blob/main/docs/harness-research/evaluation-and-evidence.md#口径与输入)。本合同维护文件与执行快照格式。
 
 每个 Case 使用 `#### U-<ID> <名称>`，用上级 `## 场景名` 归组；未归组的 Case 归为“未分组”。正文只写 `**用户输入**` 和 `**预期**`；如需进入快速档，在 Case 标题后的第一个非空行写 `**评估档位：** \`fast\``，不标记即只在 `full` 或显式选择时执行。输入使用 Markdown 引用块；多轮输入依次写成 `**用户输入 1**`、`**用户输入 2**`，并在同一 Session 执行。动态事实按同轮真实工具证据核对，不固定措辞或排版。
 

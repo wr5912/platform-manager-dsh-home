@@ -31,3 +31,10 @@
       - SERVER
       - TIMEOUT
       - TRANSPORT
+
+- id: agent-default-model
+  name: "@deepseek-ai/dsh-agent-default-model"
+  config:
+    provider: openai-codex
+    model: gpt-6.1-sol
+    reasoningEffort: max

@@ -1,6 +1,6 @@
 ---
 name: remote-data-deployment
-description: 向远端已安装的 Harness 工程平台增量更新数据工作区、管理助手原则与技能、指定 Experiment 的业务资产，并核对实际生效；用户要求同步、部署、更新数据仓库到 232、52、170 等环境时优先使用。区分完整与最小数据安装、已提交快照与已保存 Candidate，所有部署更新使用程序仓库维护的 platform/dsh-deploy。
+description: 向远端已安装的 Harness 工程平台增量更新数据工作区、管理助手原则与技能、固定 business source 的业务资产，并核对实际生效；用户要求同步、部署、更新数据仓库到 232、52、170 等环境时优先使用。区分完整与最小数据安装、已提交快照与已固定 business source 快照，所有部署更新使用程序仓库维护的 platform/dsh-deploy。
 ---
 
 # 远端数据工作区更新
@@ -19,7 +19,7 @@ description: 向远端已安装的 Harness 工程平台增量更新数据工作�
 | 本次目标 | 工具路径与边界 |
 |---|---|
 | 更新管理助手 `AGENTS.md`、根级 Skill、参考资料，或同步完整数据仓库 | 已安装双仓使用 `update`，来源是两仓已提交 HEAD，未提交文件不在交付范围。 |
-| 更新一个已安装业务实例所用的固定 Experiment 资产 | 使用 `agent-update`，交付清单中的实际已保存文件，可包含未提交修改；先核对 Agent、完整 Experiment ID、实例及远端前置摘要。 |
+| 更新一个已安装业务实例的固定 business source | 使用平台当前 pack/update 合同，交付 `business:<agent-id>@<commit>` 的完整快照；不构造 Experiment/Candidate 清单。 |
 | 更新现场配置、工作区身份或凭据 | 整库 `update` 保留 `config/`、`workspace.json` 与运行状态，不能据此宣称配置已同步。按真实可用的平台配置入口单独办理，不覆盖这些目录。 |
 | 目标尚未安装，或明确要求迁移目录 | 按程序文档使用 `pack`／安装器或 `relocate`；不将普通数据更新扩展成全量重装或目录迁移。 |
 
