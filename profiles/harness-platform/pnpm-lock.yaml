@@ -291,7 +291,7 @@ packages:
         optional: true
 
   dsh-think-zh@https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59:
-    resolution: {tarball: https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59}
     version: 1.1.1
     engines: {node: '>=22.19'}
     peerDependencies:
