@@ -63,7 +63,7 @@ description: 根据用户任务复用能力、装配 DSH 智能体，通过固�
 
 使用 `platform_instances run` 按约定来源创建或启动目标实例，再用 `detail`、`url` 核对状态、来源与真实入口。结合本次 Run、冻结 Case、当前资产和实际产物，逐项核对约定交付结果。要求在交付实例执行业务验证时，只通过当前作用域可用且已授权的执行入口办理；缺少入口就说明验证缺口，不把实例启动当作业务通过。
 
-要求独立部署时，固定同一 Experiment 与实际资产摘要，通过当前导出入口检查、生成并取得安装包。包内保留原生 `harness/`、启停工具 `agent`、`config/`、标准镜像和简短的 `manifest.json`；详细导出证据由平台留在数据根。目标机预装 Docker 与 Compose，解包后用 `./agent install`，启停维护看 `./agent help`，现场配置看 `config/README.md`。用户指定外部 Harness 时使用工具的 `--harness-root`，不复制成第二份资产。独立智能体通过原生 MCP 客户端连接平台；使用组合服务仍须连通平台，包中不内嵌平台执行器。按[独立部署合同](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/23_离线一键打包与安装.md)核对目标入口、模型、工具调用与重启后配置及会话保留，再报告交付效果。
+要求独立部署时，固定同一业务仓来源与实际资产摘要，通过当前导出入口检查、生成并取得安装包。包内保留原生 `harness/`、启停工具 `standalone_agent_launcher`、`config/`、标准镜像和简短的 `manifest.json`；详细导出证据由平台留在数据根。目标机预装 Docker 与 Compose，解包后用 `./standalone_agent_launcher install`，启停维护看 `./standalone_agent_launcher help`，现场配置看 `config/README.md`。用户指定外部 Harness 时使用工具的 `--harness-root`，不复制成第二份资产。独立智能体通过原生 MCP 客户端连接平台；使用组合服务仍须连通平台，包中不内嵌平台执行器。按[独立部署合同](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/23_离线一键打包与安装.md)核对目标入口、模型、工具调用与重启后配置及会话保留，再报告交付效果。
 
 评测容器与交付实例 HOME 不同，产物 ID 可不同；使用真实返回入口，不拼临时下载 URL。全部约定 Case 须通过，业务报告须对应实际工具结果；身份或用户数据摘要 Case 不强制额外查服务。只有约定结果均已取得相应证据才宣布完成交付；缺口、失败与未知状态分别说明。
 
