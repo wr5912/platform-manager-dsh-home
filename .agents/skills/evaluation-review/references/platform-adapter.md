@@ -4,7 +4,7 @@
 
 ## 四部分结构
 
-内容口径遵循[评测口径与输入](../../../../docs/harness-research/evaluation-and-evidence.md#口径与输入)，本文件只维护格式及平台适配。
+内容口径遵循[评测口径与输入](https://github.com/wr5912/harness-engineering-platform-data/blob/main/docs/harness-research/evaluation-and-evidence.md#口径与输入)，本文件只维护格式及平台适配。
 
 场景使用二级标题 `## 场景`，用例使用四级标题 `#### U-XXX-001 名称`。不要用三级标题划分场景或预期；说明可用段落、列表或普通四级标题。代码围栏中的标题与字段作为字面示例保留。保存后用真实解析结果核对完整输入、档位、预期及异常分支，不能只比较用例数量。
 
