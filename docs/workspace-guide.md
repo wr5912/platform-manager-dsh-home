@@ -6,6 +6,8 @@
 
 平台仅登记 `manager-workspace/` 一个原生工作区，普通新建管理会话的初始 cwd 使用该目录。其中 `harness-engineering-platform-data/` 与 `business-agents/` 是真实、独立的 Git 仓库。两个子仓仅作为业务目标，不另行注册工作区；删除其他工作区只撤销登记，保留会话和磁盘文件。数据仓保存登记、Experiment、Run、Decision、历史证据和运行配置；业务仓保存需求、设计、验收定义和当前 Harness。`config/assistant-workspace.json` 声明工作目录与业务范围，`config/repositories.json` 锁定业务来源。
 
+拉取 business-agents 时，真实业务网络地址属于 `172.16.x.x` 则优先使用 GitLab，其他环境优先使用 GitHub；首选源不可达再尝试另一端，仍按固定提交核对来源。传输地址不改变既有登记、研究记录或会话中的来源身份，也不以远端名称 `origin` 判断唯一来源。
+
 `harness-engineering-platform` 只作为平台工具与运行时实现来源，`platform-manager-dsh-home` 只作为管理身份、Skill 和 Profile 的装载来源；二者不登记为业务会话 cwd 或业务目标。该边界约束业务目标和默认工作区，不宣称操作系统级文件权限隔离；DSH 原生工具仍按其自身权限运行。
 
 | 位置 | 内容 |
