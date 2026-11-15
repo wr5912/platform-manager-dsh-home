@@ -97,7 +97,7 @@ KEV 套件保留 5 个顶层入口；与已有 compute-variant-research、decisi
 
 未进行真实 GPU 训练、远端部署、当前线上 UI/Session 验收或 GPT-5.5 跨模型测试。编码帮助脚本的原生执行路径需要实际训练依赖和 tokenizer；本环境验证了失败合同，没有伪造 ready。上一次轨迹研究的编码结果只适用于当时那批样例，不替代新数据预检。
 
-复现测试：在程序仓库 `runtime/research/kev-data` 运行 `python3 -m unittest discover -s tests -v`，并将 KEV_UPSTREAM_ROOT 指向所固定的上游来源以运行原生兼容检查；在 kev-training/scripts 运行同一 unittest 命令，HARNESS_PROGRAM_ROOT 指向程序仓库。测试夹具均为人工合成，测试输出不作为训练证据。
+复现测试：从 hep-lab 目录执行 `tools/hep-lab workspace test python`。原生兼容检查使用指向固定上游来源的 KEV_UPSTREAM_ROOT。测试夹具均为人工合成，测试输出不作为训练证据。
 
 ## 程序侧仍需接入的能力
 

@@ -35,8 +35,10 @@
 ```bash
 python3 reviewing-agent-skills/scripts/inspect_skill.py /path/to/target-skill --format json --fail-on-error
 python3 reviewing-agent-skills/scripts/inspect_skill.py /path/to/target-skill --profile dsh --format json --fail-on-error
-python3 -m unittest discover -s reviewing-agent-skills/tests -v
+python3 -m pytest -q reviewing-agent-skills/tests
 ```
+
+hep-lab 工作区的完整 Python 回归统一使用 `tools/hep-lab workspace test python`，入口会先装载运行环境。
 
 - 默认 `agent-skills` 检查通用目录包。`dsh` 额外核对固定 `0.2.1-rc.2` 的已知字段与名称合同，列出扩展和可移植性差异；不证明实际原生加载。
 - 输出保留 `findings`，并增加 `basis`、`source_url`、`coverage`、`runtime_extensions` 与 `overall_status`。

@@ -1,4 +1,5 @@
-"""Stdlib-only contract tests; synthetic Git metadata is never a native encoding run."""
+"""固定合同测试；合成 Git 元数据不构成原生编码运行证据。"""
+import pytest
 import contextlib
 import hashlib
 import importlib.util
@@ -8,7 +9,7 @@ import os
 import sys
 from pathlib import Path
 import tempfile
-import unittest
+
 from unittest.mock import patch
 from snapshot_fixture import make_snapshot
 
@@ -23,19 +24,21 @@ planner = importlib.util.module_from_spec(PLANNER_SPEC)
 PLANNER_SPEC.loader.exec_module(planner)
 
 
-class EncodingContractTests(unittest.TestCase):
+class TestEncodingContract:
     def test_missing_public_tool_stops_before_any_output(self):
         with tempfile.TemporaryDirectory() as directory:
             out = Path(directory) / 'encoding.json'
             with patch.dict(os.environ, {'HARNESS_PROGRAM_ROOT': ''}), contextlib.redirect_stderr(io.StringIO()) as error:
                 code = encoding.main(['--plan', 'missing.json', '--kev-root', directory, '--out', str(out)])
-            self.assertEqual(code, 1)
-            self.assertIn('HARNESS_PROGRAM_ROOT', error.getvalue())
-            self.assertFalse(out.exists())
+            assert (code) == (1)
+            assert ('HARNESS_PROGRAM_ROOT') in (error.getvalue())
+            assert not (out.exists())
 
-    def setUp(self):
+    @pytest.fixture(autouse=True)
+    def setup(self, request):
+        self.pytest_request = request
         self.temp = tempfile.TemporaryDirectory()
-        self.addCleanup(self.temp.cleanup)
+        self.pytest_request.addfinalizer(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.checkout = self.root / 'synthetic-checkout'
         (self.checkout / 'kev').mkdir(parents=True)
@@ -81,7 +84,7 @@ class EncodingContractTests(unittest.TestCase):
         self.plan_path.write_text(json.dumps(self.plan), encoding='utf-8')
 
     def git_metadata(self, root, *arguments, allow_missing=False):
-        self.assertEqual(root, self.checkout)
+        assert (root) == (self.checkout)
         if arguments == ('rev-parse', '--show-toplevel'):
             return (str(self.checkout) + '\n').encode()
         if arguments == ('rev-parse', 'HEAD'):
@@ -94,7 +97,7 @@ class EncodingContractTests(unittest.TestCase):
             return self.untracked
         if arguments == ('ls-tree', '-r', '-z', 'HEAD', '--', 'kev/'):
             return b'\0'.join(self.tree) + b'\0'
-        self.fail('Unexpected Git metadata request: ' + repr(arguments))
+        pytest.fail('Unexpected Git metadata request: ' + repr(arguments))
 
     def invoke(self, output='encoding-report.json'):
         out = self.root / output
@@ -105,11 +108,11 @@ class EncodingContractTests(unittest.TestCase):
     def assert_blocked_before_native(self, expected_code, exit_code=2):
         with patch.object(encoding, 'check_records') as native:
             code, report = self.invoke()
-        self.assertEqual(code, exit_code)
-        self.assertEqual(report['status'], 'blocked')
-        self.assertEqual(report['checked_records'], 0)
-        self.assertEqual(report['failures'][0]['code'], expected_code)
-        self.assertEqual(report['checks']['native_imports'], 'not_run')
+        assert (code) == (exit_code)
+        assert (report['status']) == ('blocked')
+        assert (report['checked_records']) == (0)
+        assert (report['failures'][0]['code']) == (expected_code)
+        assert (report['checks']['native_imports']) == ('not_run')
         native.assert_not_called()
         return report
 
@@ -125,11 +128,11 @@ class EncodingContractTests(unittest.TestCase):
         self.write_plan()
         with patch.object(encoding.importlib.util, 'find_spec', return_value=None):
             code, report = self.invoke()
-        self.assertEqual(code, 2)
-        self.assertEqual(report['checks']['metadata'], 'passed')
-        self.assertEqual(report['training_recipe'], 'cuda-fp32-lora')
-        self.assertIn('GPU_hardware', report['not_verified'])
-        self.assertEqual(report['training'], 'not_run')
+        assert (code) == (2)
+        assert (report['checks']['metadata']) == ('passed')
+        assert (report['training_recipe']) == ('cuda-fp32-lora')
+        assert ('GPU_hardware') in (report['not_verified'])
+        assert (report['training']) == ('not_run')
 
     def test_recipe_and_dtype_mismatch_blocks_before_native_imports(self):
         self.plan['training']['recipe'] = 'cuda-fp32-lora'
@@ -158,12 +161,12 @@ class EncodingContractTests(unittest.TestCase):
         binding = self.local_plan()
         with patch.object(encoding.importlib.util, 'find_spec', return_value=None):
             code, report = self.invoke()
-        self.assertEqual(code, 2)
-        self.assertEqual(report['checks']['metadata'], 'passed')
-        self.assertEqual(report['checkpoint_source']['init_from'], self.plan['checkpoint']['init_from'])
-        self.assertEqual(report['checkpoint_source']['execution_init_from'], binding['path'])
-        self.assertEqual(report['checkpoint_source']['verified_files'], 4)
-        self.assertEqual(report['training'], 'not_run')
+        assert (code) == (2)
+        assert (report['checks']['metadata']) == ('passed')
+        assert (report['checkpoint_source']['init_from']) == (self.plan['checkpoint']['init_from'])
+        assert (report['checkpoint_source']['execution_init_from']) == (binding['path'])
+        assert (report['checkpoint_source']['verified_files']) == (4)
+        assert (report['training']) == ('not_run')
 
     def test_local_snapshot_drift_blocks_before_native_imports(self):
         binding = self.local_plan()
@@ -178,10 +181,10 @@ class EncodingContractTests(unittest.TestCase):
             original = path.read_bytes(); path.write_bytes(original[:-1] + b'!')
         with patch.object(encoding, 'check_records', side_effect=change_snapshot):
             code, report = self.invoke()
-        self.assertEqual(code, 2)
-        self.assertEqual(report['status'], 'blocked')
-        self.assertEqual(report['failures'][0]['code'], 'local_snapshot_file_hash_mismatch: adapter_model.safetensors')
-        self.assertNotEqual(report['checks'].get('final_identity_recheck'), 'passed')
+        assert (code) == (2)
+        assert (report['status']) == ('blocked')
+        assert (report['failures'][0]['code']) == ('local_snapshot_file_hash_mismatch: adapter_model.safetensors')
+        assert (report['checks'].get('final_identity_recheck')) != ('passed')
 
     def test_fp32_recipe_cannot_execute_bf16_weight_dtype(self):
         self.plan['training']['recipe'] = 'cuda-fp32-lora'
@@ -219,9 +222,9 @@ class EncodingContractTests(unittest.TestCase):
         self.write_plan()
         with patch.object(encoding.importlib.util, 'find_spec', return_value=None):
             code, report = self.invoke()
-        self.assertEqual(code, 2)
-        self.assertEqual(report['checks']['metadata'], 'passed')
-        self.assertEqual(report['training_recipe'], 'cuda-bf16-lora')
+        assert (code) == (2)
+        assert (report['checks']['metadata']) == ('passed')
+        assert (report['training_recipe']) == ('cuda-bf16-lora')
 
     def test_encoding_failure_writes_readable_sidecar_without_overwriting_plan_report(self):
         previous = self.root / 'report.md'
@@ -229,10 +232,10 @@ class EncodingContractTests(unittest.TestCase):
         self.head = 'c' * 40
         self.assert_blocked_before_native('kev_commit_mismatch')
         readable = (self.root / 'encoding-report.md').read_text(encoding='utf-8')
-        self.assertIn('当前不能继续', readable)
-        self.assertIn('当前不能继续训练', readable)
-        self.assertIn('kev_commit_mismatch', readable)
-        self.assertEqual(previous.read_text(encoding='utf-8'), '已经保存的训练准备说明。')
+        assert ('当前不能继续') in (readable)
+        assert ('当前不能继续训练') in (readable)
+        assert ('kev_commit_mismatch') in (readable)
+        assert (previous.read_text(encoding='utf-8')) == ('已经保存的训练准备说明。')
 
     def test_existing_readable_report_also_prevents_overwrite(self):
         readable = self.root / 'encoding-report.md'
@@ -240,15 +243,15 @@ class EncodingContractTests(unittest.TestCase):
         with patch.object(encoding, 'run_checks') as checks, contextlib.redirect_stderr(io.StringIO()):
             code = encoding.main(['--plan', str(self.plan_path), '--kev-root', str(self.checkout),
                                   '--out', str(self.root / 'encoding-report.json')])
-        self.assertEqual(code, 1)
-        self.assertFalse((self.root / 'encoding-report.json').exists())
+        assert (code) == (1)
+        assert not ((self.root / 'encoding-report.json').exists())
         checks.assert_not_called()
 
     def test_changed_dataset_hash_blocks_before_native_imports(self):
         path = Path(self.plan['dataset']['files']['test']['path'])
         path.write_text(path.read_text(encoding='utf-8') + '\n', encoding='utf-8')
         report = self.assert_blocked_before_native('dataset_file_changed')
-        self.assertEqual(report['failures'][0]['partition'], 'test')
+        assert (report['failures'][0]['partition']) == ('test')
 
     def test_changed_checkpoint_metadata_blocks_before_native_imports(self):
         self.metadata.write_text(self.metadata.read_text(encoding='utf-8') + '\n', encoding='utf-8')
@@ -270,7 +273,7 @@ class EncodingContractTests(unittest.TestCase):
         self.legacy_identity_fixture()
         (self.root / 'reviews.jsonl').write_text('{"synthetic_changed_review": true}\n', encoding='utf-8')
         report = self.assert_blocked_before_native('legacy_snapshot_changed')
-        self.assertEqual(report['failures'][0]['snapshot'], 'reviews')
+        assert (report['failures'][0]['snapshot']) == ('reviews')
 
     def test_legacy_source_change_during_encoding_cannot_produce_ready(self):
         self.legacy_identity_fixture()
@@ -278,11 +281,11 @@ class EncodingContractTests(unittest.TestCase):
             (self.root / 'source.jsonl').write_text('{"synthetic_changed_source": true}\n', encoding='utf-8')
         with patch.object(encoding, 'check_records', side_effect=change_source):
             code, report = self.invoke()
-        self.assertEqual(code, 2)
-        self.assertEqual(report['status'], 'blocked')
-        self.assertEqual(report['failures'][0]['code'], 'legacy_snapshot_changed')
-        self.assertEqual(report['failures'][0]['snapshot'], 'source')
-        self.assertNotEqual(report['checks'].get('final_identity_recheck'), 'passed')
+        assert (code) == (2)
+        assert (report['status']) == ('blocked')
+        assert (report['failures'][0]['code']) == ('legacy_snapshot_changed')
+        assert (report['failures'][0]['snapshot']) == ('source')
+        assert (report['checks'].get('final_identity_recheck')) != ('passed')
 
     def test_dirty_runtime_blocks_before_native_imports(self):
         self.dirty = b' M kev/model.py\0'
@@ -315,17 +318,17 @@ class EncodingContractTests(unittest.TestCase):
         with patch.object(encoding.importlib.util, 'find_spec', return_value=None), \
              patch.object(encoding.importlib, 'import_module') as imports:
             code, report = self.invoke()
-        self.assertEqual(code, 2)
-        self.assertEqual(report['status'], 'blocked')
-        self.assertEqual(report['failures'][0]['code'], 'missing_dependencies')
-        self.assertEqual(report['checks']['metadata'], 'passed')
-        self.assertEqual(report['checks']['tokenizer'], 'not_run')
-        self.assertEqual(report['checked_records'], 0)
-        self.assertEqual(report['plan_sha256'], encoding.digest(self.plan_path))
-        self.assertEqual(set(report['files']), set(encoding.PARTITIONS))
-        self.assertIn('model_weights', report['not_verified'])
-        self.assertEqual(report['training'], 'not_run')
-        self.assertFalse(report['tokenizer_download_allowed'])
+        assert (code) == (2)
+        assert (report['status']) == ('blocked')
+        assert (report['failures'][0]['code']) == ('missing_dependencies')
+        assert (report['checks']['metadata']) == ('passed')
+        assert (report['checks']['tokenizer']) == ('not_run')
+        assert (report['checked_records']) == (0)
+        assert (report['plan_sha256']) == (encoding.digest(self.plan_path))
+        assert (set(report['files'])) == (set(encoding.PARTITIONS))
+        assert ('model_weights') in (report['not_verified'])
+        assert (report['training']) == ('not_run')
+        assert not (report['tokenizer_download_allowed'])
         imports.assert_not_called()
 
     def test_existing_report_is_never_overwritten(self):
@@ -334,8 +337,8 @@ class EncodingContractTests(unittest.TestCase):
         out.write_bytes(original)
         with patch.object(encoding, 'run_checks') as checks, contextlib.redirect_stderr(io.StringIO()):
             code = encoding.main(['--plan', str(self.plan_path), '--kev-root', str(self.checkout), '--out', str(out)])
-        self.assertEqual(code, 1)
-        self.assertEqual(out.read_bytes(), original)
+        assert (code) == (1)
+        assert (out.read_bytes()) == (original)
         checks.assert_not_called()
 
     def test_soft_target_mapping_checked_by_name(self):
@@ -345,18 +348,14 @@ class EncodingContractTests(unittest.TestCase):
                                       'options': ['read: Read', 'search: Search'], 'target': [.75, .25]}]}
         encoding.check_labels(request, materialized)
         materialized['questions'][0]['target'] = [.25, .75]
-        with self.assertRaises(encoding.CheckFailure) as raised:
+        with pytest.raises(encoding.CheckFailure) as raised:
             encoding.check_labels(request, materialized)
-        self.assertEqual(raised.exception.failure['code'], 'soft_target_mapping_changed')
+        assert (raised.value.failure['code']) == ('soft_target_mapping_changed')
 
     def test_native_label_coercion_cannot_accept_a_string_noul_label(self):
         request = {'questions': {'answer': {'type': 'noul', 'label': '1'}}}
         materialized = {'questions': [{'qid': 'answer', 'qtype': 'noul', 'keys': ['false', 'true'], 'label': 1,
                                       'options': ['no', 'yes']}]}
-        with self.assertRaises(encoding.CheckFailure) as raised:
+        with pytest.raises(encoding.CheckFailure) as raised:
             encoding.check_labels(request, materialized)
-        self.assertEqual(raised.exception.failure['code'], 'invalid_hard_label')
-
-
-if __name__ == '__main__':
-    unittest.main()
+        assert (raised.value.failure['code']) == ('invalid_hard_label')
