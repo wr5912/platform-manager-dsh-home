@@ -25,8 +25,7 @@
 在程序仓库运行：
 
 ```bash
-export HARNESS_ASSET_ROOT="$HOME/hep-lab/manager-workspace/harness-engineering-platform-data"
-export HARNESS_MANAGER_DSH_HOME="$HOME/hep-lab/platform-manager-dsh-home"
+source platform/tool-env.sh
 ./platform/dsh-platform prepare
 ./platform/dsh-platform start
 ```
