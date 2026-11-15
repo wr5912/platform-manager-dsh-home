@@ -24,7 +24,7 @@
 
 - id: agent-instructions
   config:
-    projectRootMarkers: [".manager-workspace", ".git"]
+    projectRootMarkers: [ ".manager-workspace", ".git" ]
 
 - id: llm-openai-codex
   config:
@@ -34,11 +34,11 @@
       mode: normal
       maxRetries: 10
       retryableCodes:
-      - EMPTY_RESPONSE
-      - RATE_LIMIT
-      - SERVER
-      - TIMEOUT
-      - TRANSPORT
+        - EMPTY_RESPONSE
+        - RATE_LIMIT
+        - SERVER
+        - TIMEOUT
+        - TRANSPORT
 
 - id: agent-default-model
   name: "@deepseek-ai/dsh-agent-default-model"
@@ -46,3 +46,7 @@
     provider: xiaomi-token-plan-cn
     model: mimo-v2.6-flash
     reasoningEffort: off
+- id: ui-theme
+  name: "@deepseek-ai/dsh-client-ui-theme"
+  config:
+    preference: light
