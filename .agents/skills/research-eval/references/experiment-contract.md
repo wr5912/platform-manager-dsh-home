@@ -12,7 +12,7 @@
 - 实际运行环境和来源；
 - 本次结论不能外推到哪里。
 
-业务 Case 只维护在 `agents/<agent-id>/evaluation.md`。Experiment 不保存本地 `evaluation/plan.yaml`，也不在评测文件中维护选择表。平台运行通过 `eval/preview/start` 选择 mode 与 cases；底层 CLI 的 `--mode fast|full` 和 `--case` 表示同一选择语义；Run 的 `evaluation_ref` 指向该文件，`inputs.lock.json` 锁定所选 Case 的快照及完整场景目录。
+业务 Case 只维护在 `agents/<agent-id>/evaluation.md`。当前业务仓不另存重复评测选择表或版本目录。平台运行通过 `eval/preview`、`eval/start` 选择 mode 与 cases；底层 CLI 的 `--mode fast|full` 和 `--case` 表示同一选择语义；Run 的 `evaluation_ref` 指向该文件，`inputs.lock.json` 锁定所选 Case 的快照及完整场景目录。
 
 ### Case
 
@@ -52,6 +52,6 @@ Evaluation 或 Decision 应让读者直接找到：
 - 失败、异常和未知状态；
 - 结果受哪些模型、工具、环境或输入限制；
 - `adopt`、`continue`、`reject` 或 `inconclusive` 的理由；
-- 下一步是否需要扩大样本或生成 Research Release。
+- 下一步是否需要扩大样本、改进资产或处理外部条件。
 
 机器检查通过不代表这些内容语义正确，最终判断由研究者负责。

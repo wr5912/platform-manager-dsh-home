@@ -60,7 +60,7 @@ KEV 套件保留 5 个顶层入口；与已有 compute-variant-research、decisi
 4. commands 子命令重新核对计划、数据与完整编码报告，只返回训练命令卡。真实执行器检查授权、硬件、时限和预算，保存真实作业身份、日志和 checkpoint。命令卡不是作业执行器。
 5. train 只更新权重；development 选择配方；calibration 拟合概率/约定阈值；test 由外部执行流程在冻结后单独验收。最终测试卡上的 requires 是执行条件说明，本套没有声称提供远端强制执行门禁。
 6. report_only 校准只产报告，不改温度；workload_heldout 是需明确选择和评审的业务分布内校准口径，原生写回选项及偏差完整说明在训练技能参考中。不能将业务留出集说成通用发布的分布外校准证据。
-7. 获授权后使用真实推理服务/工具合同接入 Candidate。LangGraph 工具参数与回退由代码承担；再按原算力流程验证 generated、built、frozen、loaded、compared，人员复核 end。
+7. 获授权后使用真实推理服务/工具合同接入所属业务 Harness，LangGraph 工具参数与回退由代码承担；分别核对当前编辑、构建、实际重载和新两侧 Run 的效果与资源，不以配置或训练完成代替业务结论。
 
 具体步骤与示例见 [.agents/skills/kev-training/SKILL.md](../../.agents/skills/kev-training/SKILL.md)。外部数据目录、模型缓存、训练日志和权重放忽略的本地状态或独立训练环境；不要提交凭据、真实会话附件或模型权重。
 
@@ -108,6 +108,6 @@ KEV 套件保留 5 个顶层入口；与已有 compute-variant-research、decisi
 | training-servers 只有 list/save/probe，probe 只探测 banner | 实际训练执行器 start/status/cancel/collect、作业身份、恢复与工件回收 |
 | medium 会话只策划，datasets 和新增 Skill 不在专项范围 | 明确后续用户授权与阶段转换合同，按阶段开放必要动作并绑定来源；不能简单取消整个 scope |
 | generation_contract 是 LangGraph AOT + callTool + 文本 infer | 注册真实 KEV 推理服务/插件 schema、版本与 checkpoint/输入构造器绑定 |
-| 服务、工件、构建不等于已装载/等效 | 新两侧 Run 的装载回执、关键 Case 与资源比较、人员 end 复核 |
+| 服务、工件、构建不等于已装载/等效 | 新两侧 Run 的装载回执、关键 Case 与实际资源比较 |
 
 以上缺口写在技能和研究方法中，助手可以准确策划与交接；不能仅因技能文件存在就声称按钮已自动训练或中算力变体已经等效。

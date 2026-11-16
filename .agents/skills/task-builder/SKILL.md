@@ -1,72 +1,43 @@
 ---
 name: task-builder
-description: 根据用户任务复用能力、装配 DSH 智能体，通过固定业务测试、必要修复和真实实例产物完成交付。
+description: 根据用户任务复用能力，在业务仓装配原生 DSH Harness，通过固定业务测试、必要修复和真实实例产物完成交付。
 ---
 
 # 构建并交付任务型智能体
 
-按“明确任务 → 确定办理步骤 → 装配 → 初测 → 必要修复 → 交付”推进。沿用固定 `task_context`，通过当前作用域允许的平台工具读取和执行；不确定参数时先用 `describe` 读取当前动作合同。已获授权且必要信息齐全时连续办理，写入遵循 DSH 原生权限，不另等任务启动或平台二次确认。已有 Job、Run 或实例先查实际状态，不重复创建。保持管理身份，配置名称、文件存在、模型自评不能代替真实调用与业务结果。
+按“明确任务 → 定位业务资产 → 装配 → 初测 → 修复 → 交付”推进。沿用固定 task_context 与已有授权；不确定参数先 describe，已有 Job、Run 或实例先查状态，不重复创建。保持管理身份，模型自评、配置名称或容器运行不能代替业务结果。
 
-## 1. 明确目标和能力
+## 1. 目标与执行路径
 
-固定上下文中的 `experiment_id` 是用户所选的起点版本，`reference_sources` 只是复用来源。用户要求从已有版本建立独立版本时，所选版本是父版，先固定可恢复来源再派生；不能把它直接作为写入目标，也不能用编号、baseline_ref 或原创建方式代替本次意图。只有用户明确指定继续修改的独立 Candidate，才直接作为本次目标。先用 `detail` 读取所选版本，再用 `tasks/capabilities {agent_id}` 或 `{source:"experiment:<实际ID>"}` 查所需能力；确需跨 Agent 发现时才用空 input。不因其他版本更新而换来源，不遍历全部历史。仅询问改变目标、输入、验收或外部权限的缺口。
+固定目标为 `business:<id>` 当前工作树或只读 Git tag/commit，reference_sources 只作复用来源，不改变写入目标。用 `business/detail`、`business/read` 核对实际文件、模型、工具与必要来源；需要发现其他业务能力时只读取相关 `business/list` 与 MCP 目录，不遍历全部历史。
 
-需要新增或适配业务插件时，按需使用 `dsh-business-plugin-development` 判断复用方式、目标版本和执行能力。进入实现后沿用本任务目标、授权及用户明确的资源限制，完成后回到装配、初测与交付；缺少目标构建或装载入口时说明缺口，不在管理 Profile 安装后冒称交付。
+新 Agent 按 `agent-maintenance` 通过原生文件工具在授权业务仓创建 harness.yaml、evaluation.md 与 dsh 原生资产，并同步 manifest.yaml；先执行该仓统一环境下的 check_agents，再通过现有平台工具构建和验证。已有 Harness 使用 edit/read、edit/preview、edit/apply；固定来源只读，不能直接修改。改变业务行为按 harness-evolution 核对原能力与比较依据，不强制创建版本副本或 Git 提交。
 
-用真实业务输入和可核对产物定义成功，保留必要回归。巡检固定设备集合及实际必须调用的工具；不能靠少报设备、只测身份或修改预期使任务通过。
+插件开发按需读取 dsh-business-plugin-development；MCP 接入按 mcp-composition。用真实输入、必须调用的工具、完整业务范围与可核对产物定义成功，不用身份测试代替业务任务或靠缩小范围通过。
 
-## 2. 确定办理步骤
+## 2. 装配与用例
 
-明确目标、业务 Case、产物、必要操作和停止条件，再按当前平台动作办理；参数以 `describe` 返回的 schema 为准。下列是选择依据，不是整段可复制请求：
+从真实来源读取完整内容，目标用 edit/read 取得摘要。以 `{experiment_id:"business:<id>",edits:[{path,content,expected_sha256}]}` 预览后应用；确认新文件不存在才用 null 摘要，引用和绑定同批更新。保留 Preset、Plugin、模型与工具选择，只有角色说明不算能力装配完成。截断正文、二进制元数据和缺失文件不能当作完整资产。
 
-| 条件 | 当前动作与必要输入 |
-|---|---|
-| 新建 Agent | `platform_agents new {agent_id,name,description,role,evaluation_cases}`；显式提供完整角色和新增业务 Case，最多 30 条且 ID 唯一 |
-| 已有独立 Candidate | `detail` 核对实际目标，后续使用 `source:"experiment:<实际ID>"` |
-| 从已有版本建立独立版本 | `create {agent_id,parent_experiment_id,parent_ref,research_question}`；父版使用核对过的固定 `git:<40位提交>`，保留原版本 |
-| 装配与编辑 | `tasks/assembly-preview`、`tasks/assembly-apply` 或 `edit/read`、`edit/preview`、`edit/apply`，以真实来源和摘要组织参数 |
-| 评测与实例交付 | 用 `eval/preview`、`eval/start`、`eval/status` 取得独立 Run；用 `platform_instances run` 操作约定实例，按需查询状态和入口 |
+用 cases/list、cases/read 核对现有场景与必要回归；新增、修改、删除或改号遵循 evaluation-review 和 agent-maintenance。新 Agent 明确创建实际需求与 Case，不假定工具自动补身份或角色用例。仅将业务要求写入 evaluation.md，技术装载由项目检查与实例回执覆盖。
 
-只执行用户授权内完成目标所需的操作。巡检先固定设备集合、必须调用的真实工具和业务产物要求，评测及交付时逐项核对，不以评测报告代替业务报告。算力任务由 `compute-variant-research` 办理。
+必要的依赖与 Managed 构建使用 assets/dependencies/prepare、assets/build-preview、assets/build；核对当前来源、制品与引用。成功后继续首个未完成阶段，不重复准备有效步骤。
 
-新 Case 的 ID 以 `U-` 开头，标题单行，预期正文不增加 Markdown 标题。平台自动创建 `U-IDENTITY-001`、`U-ROLE-001`，不重复定义。目标创建后回读实际 Case，明确本次业务测试与必要回归；`eval/preview`、`eval/start` 用 `cases` 传其真实 ID，由每次 Run 冻结选择和输入，修复期间不改口径。
+用户给定修复次数、时间或资源限制时，预留失败修复、必要回归与交付验证；失败轮也计数，暂停恢复不重置额度。未指定时按实际结果和停止条件继续，不另设默认额度或把未观测消耗补零。
 
-遵守用户明确的修复次数、时间或资源限制；在已确认预算内，先预留失败修复轮、受影响 Case 与必要回归的复测及交付验证。失败轮也计数，暂停续作不重置已用额度；不足时停止说明，不自行扩大预算或跳过回归。未指定时以约定结果、真实阻塞和停止条件判断是否继续，不另加默认任务额度。模型调用、费用和 Token 只报告实际采集值，未观测部分保持未知，不宣称外部消耗已被统一硬封顶。
+## 3. 初测与修复
 
-## 3. 装配目标
+1. eval/preview 核对目标与真实 Case，再沿同一 run_id 和输入 eval/start；mode/executor/review 使用约定值。需要报告时显式传 artifact_export，优先保留同一业务 Session 实际工具回执正文并核对摘要，不能要求模型重复伪造正式报告。
+2. eval/status 有界查询，保存真实 job_id/run_id。检查约定 Case、真实工具、完整结果及实际产物；completed 不等于业务 passed。
+3. 失败先读冻结输入、轨迹和原始错误，找共同根因；按当前摘要编辑业务资产，复测失败项与约定回归。保留失败 Run，不能改预期、删除失败项或扩大授权。
+4. 恢复内容时核对固定来源、当前摘要和本次范围；并行变化先重读，不覆盖。结果未知先查状态，取消用 eval/cancel 并核对收尾。
 
-新建使用 `platform_agents new`，派生使用 `create`；取得创建回执的真实目标 ID 后，才读取目标摘要并装配，不向原父版提交装配预览或写入。用户已明确续作的独立 Candidate 沿用原目标。仍待原生批准、失败或取消时，不执行依赖该写入的后续步骤。
+## 4. 实例与独立交付
 
-从 `tasks/capabilities` 选择资产，`assets/read-fixed` 读取固定源文件，`edit/read` 读取目标。装配使用 `tasks/assembly-preview`，通过后以同一 input 调 `tasks/assembly-apply`：
+用 platform_instances 按约定来源创建、启动或重载实例，再读 detail、url 与 asset_status。需要重新执行业务验收时使用新 Session，并核对真实产物；只有启动或重载回执不能宣布业务通过。停止再启动使用同名实例，保留 HOME、会话、端口、模型与入口，不操作无关实例。
 
-| 字段 | 值从哪里来 |
-|---|---|
-| `target_source` | 已核对的目标 Experiment |
-| `expected_candidate_sha256` | 目标 detail 或 tasks/capabilities 的内容摘要 |
-| `files[].source/path` | 已读取的固定复用来源和真实路径 |
-| `files[].expected_source_sha256` | assets/read-fixed.selected.sha256 |
-| `files[].expected_target_sha256` | edit/read 的摘要；确认不存在才用 null |
-| `configuration_edits[]` | 同批绑定需要的 `{path,content,expected_target_sha256}`，path 相对 Candidate，content 为完整文本 |
+要求独立部署时，通过现有一键打包入口导出同一业务来源；平台和独立包统一交付 ZIP、校验文件与外部 install.sh。目标执行 `./install.sh --archive <安装包.zip>` 完成离线安装与启动，维护使用 standalone_agent_launcher；现场参数在 config/deployment.env，模型与MCP连接使用包内配置入口。包内提供运行依赖，所用模型和外部 MCP 仍须在目标网络可达，不把离线安装当作模型离线。
 
-`assets/read-fixed.candidate_digest` 是 Git 对象摘要，不能代替目标内容摘要。`features/read-source.ref` 是说明文件路径，不是提交。缺少完整文本、来源或摘要时先补读取；截断预览和二进制元数据不能当完整文件装配。复制能力文件及 Preset/Plugin 绑定一并预检，只有角色描述不算能力就绪。MCP 接入按 `mcp-composition`，凭据留在原生配置。
+托管与独立共用 DSH 原生 MCP 机制，托管连接参数由平台动态提供，独立实例使用本地配置；组合执行器与 LFX 仍在平台，不内嵌到业务包。按[独立部署合同](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/23_离线一键打包与安装.md)核对真实入口、模型、工具调用、报告下载和重启后的配置/会话保持。
 
-## 4. 初测与修复
-
-1. `eval/preview` 核对目标和冻结 Case，再 `eval/start`。使用约定 mode/executor/review；一般业务初测为 fast/api/none。需要报告时显式传 `artifact_export:{format:"markdown",filename:"inspection-report.md"}`。导出优先采用同一业务 Session 实际工具回执正文并核对 report_sha256，没有正式正文才取最后实际回复，不要求模型重复报告全文。
-2. 用 `eval/status {job_id}` 查询；服务端有界等待，不频繁新开模型轮询。保存返回的 job_id/run_id，未完成先保留运行状态，不重复启动。检查全部约定 Case、真实工具与 `artifacts/<case_id>/inspection-report.md`。
-3. 出现失败先读取冻结输入、轨迹和结果，定位共同原因。需要改资产时先读文件摘要，通过当前编辑接口修改，再复测失败项及约定回归。保留失败 Run；达到用户约定的停止条件或没有有效下一步时说明结果，不扩大授权、改 Case 或抹去原 Run。
-4. 需要恢复资产时，核对固定父版、当前摘要和本次修改范围，仅通过当前支持的动作处理；并行变更冲突就停止覆盖。无法完整恢复时说明缺口；首次新建无固定父版时保留未交付 Candidate，不影响既有版本。
-
-暂停后续作先读实际 Job、Run 或实例状态，沿用原目标和用户约定；取消评测使用 `eval/cancel {job_id}` 并核对收尾。未知写入结果先查实际状态，不重发；没有有效状态则说明待核对对象。
-
-## 5. 交付与结束
-
-使用 `platform_instances run` 按约定来源创建或启动目标实例，再用 `detail`、`url` 核对状态、来源与真实入口。结合本次 Run、冻结 Case、当前资产和实际产物，逐项核对约定交付结果。要求在交付实例执行业务验证时，只通过当前作用域可用且已授权的执行入口办理；缺少入口就说明验证缺口，不把实例启动当作业务通过。
-
-要求独立部署时，固定同一业务仓来源与实际资产摘要，通过当前导出入口检查、生成并取得安装包。包内保留原生 `harness/`、启停工具 `standalone_agent_launcher`、`config/`、标准镜像和简短的 `manifest.json`；详细导出证据由平台留在数据根。目标机预装 Docker 与 Compose，解包后用 `./standalone_agent_launcher install`，启停维护看 `./standalone_agent_launcher help`，现场配置看 `config/README.md`。用户指定外部 Harness 时使用工具的 `--harness-root`，不复制成第二份资产。独立智能体通过原生 MCP 客户端连接平台；使用组合服务仍须连通平台，包中不内嵌平台执行器。按[独立部署合同](https://github.com/wr5912/harness-engineering-platform/blob/main/docs/platform-design/23_离线一键打包与安装.md)核对目标入口、模型、工具调用与重启后配置及会话保留，再报告交付效果。
-
-评测容器与交付实例 HOME 不同，产物 ID 可不同；使用真实返回入口，不拼临时下载 URL。全部约定 Case 须通过，业务报告须对应实际工具结果；身份或用户数据摘要 Case 不强制额外查服务。只有约定结果均已取得相应证据才宣布完成交付；缺口、失败与未知状态分别说明。
-
-收尾依据本次实际回执中的 Case 集合、实例操作和产物组织结果，不用设备数或交付项数代替用例数，也不否认回执已证实的实例创建和启动。需要说明消耗时，标明是读取该回执时的已观测值；后续收尾调用仍可能计入，不将快照值写成最终总额，也不为更新数字循环查询。
-
-检查失败时在原授权及停止条件内修复和复测，不重新索取整体授权。向用户提供结果、实例和产物入口，以及影响使用的限制。Mock 或缺真实算力的部分单独标明，不能替代真实业务验收。
+结束时按真实 Case、实例和产物回执报告已完成范围及限制，不用设备数或交付项数替代 Case 数。已有授权内继续修复与复测；Mock、未接入外部系统和未运行部分分别说明，不能升级为完整业务通过。

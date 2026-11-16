@@ -27,7 +27,7 @@ description: "准备或继续 KEV 微调、编码检查、校准、评估与模�
 沿用决策合同中的目标 Skill 版本、source_refs 和 evaluation_slices；核对固定版本的渐进可见性和规范分支实际覆盖。训练与服务使用同一版本的状态和候选构造器，只投影当时可见内容。缺少规范覆盖或历史版本时列明范围；更换 Skill 后核对受影响职责，不沿用旧版本通过结论。
 
 1. 未准备好的输入交给 [数据准备公开入口](https://github.com/wr5912/platform-manager-dsh-home/blob/main/.agents/skills/kev-trace-pipeline/SKILL.md#数据准备与审计交接)；接收平台 v2 转换回执、已复核 IR 或原生 KEV 四分区及其分组审计，不读取对方私有资料。三种 dataset.kind 分别为 platform-v2、trace-ir、legacy-native。保留四份实际非空文件，不再运行官方 convert_data.py 或 split_data.py。
-2. 用真实 agent/父 Experiment/固定 git ref 绑定目标。轨迹和平台数据填写真实 source_run_ids；旧表格或既有 JSONL 确实没有 Run 时，legacy-native 允许空数组，来源留在导入材料中，不能补造 Run。界面的 `provider/model` 是运行路由；从实际可训练 checkpoint 的固定版本读取训练元数据，不直接将该路由拼成权重地址。
+2. 用真实 agent 与固定业务 Git ref 绑定目标；请求沿用的 parent_experiment_id 字段填写实际 business 来源选择器。轨迹和平台数据填写真实 source_run_ids；旧表格或既有 JSONL 确实没有 Run 时，legacy-native 允许空数组，来源留在导入材料中，不能补造 Run。界面的 `provider/model` 是运行路由；从实际可训练 checkpoint 的固定版本读取训练元数据，不直接将该路由拼成权重地址。
 3. 从固定 checkpoint 获取 training_config.json，记录来源与 SHA-256。准备 `assets/training-request.example.json` 所列字段；示例占位值不能直接提交。`init_from` 保留固定 Hub 来源身份；需要从已下载目录执行时，按 [训练交接合同](references/training-run.md#请求合同) 提供可选 `checkpoint.local_snapshot`，以固定仓库元数据及摘要绑定实际目录，不手改 argv。路径指向执行训练的同一环境；路径或内容改变后重新准备计划并做编码检查。
 4. 当前脚本支持原生 KEV LoRA 的 `cuda-bf16-lora`（默认）和 `cuda-fp32-lora` 两种 recipe。无原生 BF16 的 CUDA GPU 可显式选择 FP32；实际显存和训练可行性仍需核对。全量权重、其他后端、提高上下文预算或混入公共 replay 属于独立 recipe，需要实际验证，不能临场改参数绕过检查。 既有 `training.dtype=bf16/fp32` 请求继续兼容并映射到同精度配方；同时指定 recipe 时两者必须一致。
 
@@ -53,7 +53,7 @@ description: "准备或继续 KEV 微调、编码检查、校准、评估与模�
 - **开发与校准**：development 用于迭代，calibration 用于拟合；报告与写入 checkpoint 温度是不同动作。检查实际拒收数、有效题数和来源组。未成功前不进入依赖步骤。
 - **最终测试**：从调参循环分离；先冻结模型、温度、阈值、状态/候选构造器和评判口径，再用 test。不得拿 test 定向造训练数据。
 - **服务与变体接入**：仅在该阶段已授权时按 `references/variant-binding.md` 核对实际服务/工具 schema，再交给本地 `kev-deploy` 入口选择部署路径。训练授权不自动包含云部署、发布、清理或实例切换。
-- **完整比较**：交回 `compute-variant-research`，用同一固定父版和新两侧 Run 验证质量与资源；离线准确率不等于等效，end 仍由人员页面复核。
+- **完整比较**：交回 `compute-variant-research`，用核对过的业务来源和新两侧 Run 验证质量与资源；离线准确率不等于业务等效。
 
 未知作业结果先查原作业，不改名重复启动。恢复只进入首个未完成阶段；保留失败与旧产物。较弱管理模型也遵守相同业务模型继承规则，不能为适配管理模型而修改父版模型。
 

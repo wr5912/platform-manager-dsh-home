@@ -10,7 +10,7 @@ description: 定位平台管理任务的工作区、目标和当前状态，澄�
 ## 定位目标
 
 1. 按需调用平台工具 `context`，使用其返回的 `workspace.id`、`asset_root`、`program_root`、`local_state_root`。默认 cwd 为 `business_workspace.manager_workspace_root`，数据与业务定义分别位于其两个真实仓库；管理 Skill 从原生 DSH HOME 装载，程序实现通过平台工具使用；Session 与实例 HOME 在本地状态根。当前 shell 目录、旧 Session 的 cwd 不替代这些路径。
-2. 有固定任务上下文时沿用其中的 Agent、Experiment、Run 或实例。用户指定对象时先读取其详情；没有目标且确需选择时才查询列表。页面切换不改变正在办理的目标。
+2. 有固定任务上下文时沿用其中的 Agent、business 来源、Run 或实例。当前工作树与只读 Git tag/commit 分别核对；用户指定对象先读取实际详情，没有目标且确需选择时才查列表。页面切换不改变正在办理的目标。
 3. 查询“当前版本”时核对来源与实例装载。最大编号、配置名称或历史观察不证明当前运行状态；读到后续证据引用时按需核对。
 4. 涉及文档创建、导入、移动或导出时，先按工作区 [AGENTS.md 的业务文档归属限制](../../../AGENTS.md#业务文档归属硬性限制)确定归属和目标路径，再写入并回读；归属不明先澄清。文档维护和任务收尾同时执行[失效文档及时清除原则](../../../AGENTS.md#失效文档及时清除硬性原则)。
 
@@ -33,7 +33,7 @@ description: 定位平台管理任务的工作区、目标和当前状态，澄�
 | 融合同一智能体的多个固定来源 | `harness-experiment-fusion` |
 | 审查、精简或去重 evaluation.md，核对真实用户任务、预期、判定证据与评测成本 | `evaluation-review` |
 | 执行评测、比较结果 | `research-eval` |
-| 研究算力变体、生成或比较变体 | `compute-variant-research` |
+| 研究质量与资源优化、训练接入及业务对比 | `compute-variant-research` |
 | 接入或编排 MCP 工具、查看组合运行 | `mcp-composition` |
 | 审查 MCP 服务、OpenAPI 转换描述、分组目录及调用契约 | `review-mcp-servers` |
 | 为业务智能体设计、开发、适配或审查 DSH 插件 | `dsh-business-plugin-development` |
@@ -53,17 +53,17 @@ description: 定位平台管理任务的工作区、目标和当前状态，澄�
 
 业务插件开发在普通管理入口或现有构建、演进任务中按需读取 `dsh-business-plugin-development`，不新造 `task_context.skill` 或扩大专用任务范围。官方技能在其引用目录中按需读取；目录内的原文与模板不授权在当前管理 Profile 安装目标业务插件。
 
-知识整理在普通管理会话按需读取 `llm-wiki`，用原生文件工具维护数据根 `knowledge/`；不新增 `task_context.skill`。明确集成到业务智能体时，仍由既有维护或演进路径写入独立 Candidate，保持用户授权范围。
+知识整理在普通管理会话按需读取 `llm-wiki`，用原生文件工具维护数据根 `knowledge/`；不新增 `task_context.skill`。明确集成到业务智能体时，沿当前资产编辑合同写入该业务 Harness，固定来源只读，保持用户授权范围。
 
 远端数据更新在普通管理会话优先读取 `remote-data-deployment`，通过实际可用的原生 `bash` 及长任务工具调用公开 `platform/dsh-deploy`；不新增 `task_context.skill`。先定位现场安装与完整／最小模式，再区分整库已提交快照和指定实例的已保存资产，保持用户授权范围。
 
-KEV 任务按当前阶段加载所需技能，已授权范围内由工具连续执行固定步骤。中算力按钮仍走 `compute-variant-research`，不能新造 `task_context.skill=kev-*`；普通管理入口可按需读取已装载的技能。四个数据中间阶段的方法由 `kev-trace-pipeline` 按需引用，不重跑已完成步骤。官方微调和部署完整包分别由 `kev-training`、`kev-deploy` 的本地入口适配后读取；已有模型只部署不要求先训练，官方示例本身不授予训练、上传、部署或清理权限。
+KEV 任务按当前阶段加载所需技能，已授权范围内由工具连续执行固定步骤。资源优化任务沿 `compute-variant-research` 选择实际阶段，不新造 task_context.skill；普通管理入口可按需读取已装载的技能。四个数据中间阶段的方法由 `kev-trace-pipeline` 按需引用，不重跑已完成步骤。官方微调和部署完整包分别由 `kev-training`、`kev-deploy` 的本地入口适配后读取；已有模型只部署不要求先训练，官方示例本身不授予训练、上传、部署或清理权限。
 
-用户在普通管理会话明确授权端到端生成变体时，沿固定 Agent、完整父版、来源 Run 和实际产物连续办理：`compute-variant-research` 定位与派生 → 抽取及真实逐题复核 → `kev-trace-pipeline` 转换 → `kev-training` 编码、训练和校准 → `kev-deploy` 服务核对 → 原变体的构建、装载与两侧 Run。每阶段只加载其当前所需 Skill，成功回执后进入首个未完成阶段，已有整体授权不因换 Skill 再次索取。普通会话使用实际注册的 `bash`、`job_output`、`job_list`、`job_kill` 与平台工具；SSH命令卡和工件传输交接给 [kev-training 的原生执行入口](../kev-training/SKILL.md#原生执行与平台回放取证)，按其输入、结果与恢复约定办理。用户仅要求策划或抽样时按其授权交付，不自行扩大为执行、训练或部署；这一业务约束由 AGENTS.md 和技能指导，不叠加原生会话检查。
+用户在普通管理会话明确授权端到端生成变体时，沿固定 Agent、完整父版、来源 Run 和实际产物连续办理：`compute-variant-research` 核对业务来源与比较计划 → 抽取及真实逐题复核 → `kev-trace-pipeline` 转换 → `kev-training` 编码、训练和校准 → `kev-deploy` 服务核对 → 同一业务 Harness 的构建、装载与两侧 Run。每阶段只加载其当前所需 Skill，成功回执后进入首个未完成阶段，已有整体授权不因换 Skill 再次索取。普通会话使用实际注册的 `bash`、`job_output`、`job_list`、`job_kill` 与平台工具；SSH命令卡和工件传输交接给 [kev-training 的原生执行入口](../kev-training/SKILL.md#原生执行与平台回放取证)，按其输入、结果与恢复约定办理。用户仅要求策划或抽样时按其授权交付，不自行扩大为执行、训练或部署；这一业务约束由 AGENTS.md 和技能指导，不叠加原生会话检查。
 
 ## 执行与停止
 
-所有管理任务按工作区 `AGENTS.md` 和用户授权使用 DSH 原生工具与平台工具。资产变更与实例操作通过平台工具读取、按当前动作合同执行并回读；需要的预览和摘要以该动作合同为准。特性整理与抽样在固定目标内自动保存；其他写动作遵循 DSH 原生权限和真实回执，已有授权内连续办理，不另等平台二次确认。只读或 dry 请求始终保持原范围。
+所有管理任务按工作区 `AGENTS.md` 和用户授权使用 DSH 原生工具与平台工具。资产变更与实例操作通过平台工具读取、按当前动作合同执行并回读；需要的预览和摘要以该动作合同为准。需要保存的业务说明使用当前资产编辑合同，抽样使用当前数据工具；写动作遵循 DSH 原生权限和真实回执，已有授权内连续办理，不另等平台二次确认。只读或 dry 请求始终保持原范围。
 
 收到“继续”先沿用当前目标与真实回执，只办理首个未完成步骤；不重新清点全库、不重跑已完成操作。单场景排序等确定性小任务直接调用现有工具，不为此强制委派子任务或开展全量审查。
 

@@ -51,7 +51,7 @@ node --experimental-strip-types CLI forward --asset-root ROOT --server-id SERVER
 
 ## 平台回放取证
 
-训练前先在当前 `local_state_root` 的任务目录保存共用的 NLU、state、questions 与 replay 源码，再运行采集与回放。目录和文件身份写入该任务已有的 `handoff.json`，清单记录逐文件字节数、SHA-256、三个 constructor 摘要及 `replay_source_sha256`。已冻结的阶段交付设为只读；后续任务从该数据路径恢复，最终将同一版本回流派生 Candidate，以 Candidate 作为唯一可编辑源码。源码或构造口径改变时保存新版本，并重新执行受影响的回放、编码和训练。
+训练前先在当前 `local_state_root` 的任务目录保存共用的 NLU、state、questions 与 replay 源码，再运行采集与回放。目录和文件身份写入该任务已有的 `handoff.json`，清单记录逐文件字节数、SHA-256、三个 constructor 摘要及 `replay_source_sha256`。已冻结的阶段交付设为只读；后续任务从该数据路径恢复，最终将同一版本的运行源码按当前资产合同写回所属业务 Harness，业务仓作为唯一可编辑来源。源码或构造口径改变时保存新版本，并重新执行受影响的回放、编码和训练。
 
 普通管理会话可用程序根 `runtime/research/platform-replay-input.mts` 批量保存实际平台HTTP回执，不手工复制工具输出。`URL` 必须匹配当前数据根登记的平台基址，`CONFIG` 是已核对模型和构造器身份的回放配置文件，`OUT` 为新目录：
 
@@ -85,20 +85,12 @@ node --experimental-strip-types IRCLI finalize --url URL --asset-root ROOT --ses
 
 finalize 只读公开原生 Session 的完整 follow/page 记录，核对模型已收到完整新输入、成功写入与同 SHA 回读，再派生 `annotations.jsonl` 和 `receipt.json`。主体、模型及读取和写回位置由原生事实产生；原 IR 和答案保留，既有输出目录不覆盖。blocked 时按 reason 核实际状态再继续，不盲目重放写入。原生日志只在内存处理，回执仅保存必要身份、摘要与位置。生成的 `{sample_id,label}` 可直接交 annotate；verified 是 AI 功能复核主张，不表示人工真值或变体 end。
 
-## Candidate 源码导入
+## 业务源码导入
 
-新 Candidate 已由平台 `compute-variants/preview` → `create` 建出后，用程序根 `runtime/research/platform-asset-edit.mts` 的 `import` 模式把冻结文本源码写入该 Candidate；目标 `--experiment-id` 必须是新建出的 Candidate，不能是固定父版，也不使用占位值。经原生 `bash`/Job 执行，长期命令保存真实 Job ID：
+目标使用已授权的 business:<id> 当前工作树，固定 Git tag/commit 只读。先核对完整来源文件、原字节 SHA、目标路径及目标原摘要；新 Agent 按 agent-maintenance 原生文件流程初始化，已有 Harness 不直接写文件绕过资产编辑合同。
 
-```text
-node --experimental-strip-types PROGRAM_ROOT/runtime/research/platform-asset-edit.mts import --url PLATFORM_URL --asset-root ASSET_ROOT --agent-id AGENT_ID --experiment-id EXPERIMENT_ID --source-manifest SOURCE_MANIFEST --expected-manifest-sha256 MANIFEST_SHA --out OUTPUT_DIR
-```
+通过 platform_agents 或程序统一入口 platform/hep agent 执行 edit/read → edit/preview → edit/apply → edit/read。输入文件的 experiment_id 承载实际 business 选择器，edits 每项包含 path、完整 content 与生成本次编辑时取得的 expected_sha256。新文件先读取确认不存在再用 null，移动提供 move_to 并同批更新引用。
 
-`PROGRAM_ROOT`、`ASSET_ROOT` 取当前受信工作区上下文，`PLATFORM_URL` 取数据根登记的平台基址，`AGENT_ID`、`EXPERIMENT_ID` 取平台实际回执，`SOURCE_MANIFEST`、`MANIFEST_SHA` 取冻结 stage 的真实清单与原字节 SHA，`OUTPUT_DIR` 是新目录；均按实际值替换，示例变量不是真实 ID。
+大段文本应从已核验来源构造同一完整输入文件，不手工截断、重复抄写或读取到新 SHA 后覆盖原基线。目标摘要变化先核对并行修改，字节相同只回读不重复写；写回执未知先读实际文件，核到目标字节不冒称已收到成功回执。
 
-该 CLI 内部复用已登记平台 URL/工作区核对与专用 admin 认证，Cookie 与密码不进入模型参数或输出。它读取 UTF-8 文本 source manifest 与 `files[].path`/`sha256`（可选 `bytes`），固定 source manifest 原字节 SHA；当前 stage manifest 兼容 `agent` 字段。文本文件默认导入该 Candidate 的 `dsh/managed/compute-workflow/<source path>`；`files[].target_path` 可显式指定 Candidate 内相对目标路径（用于实际需要变更的 Guard、Preset、Profile 等集成文件），不允许越出 Candidate。二进制模型仍走既有 `training-ssh transfer --direction download` 真实 Job 回收，不使用文本导入。
-
-`files[].expected_sha256` 必须在生成完整目标正文时由 `edit/read` 取得并原样保留；允许 `null` 或 64 位小写 SHA，缺省/`null` 仅用于新建文件。实际 `edit/read` 与该基线不一致时拒写，不得重新读取最新 SHA 覆盖该基线；已同字节可只读跳过；写回执未知先 readback，不重发 apply。集成文件的 manifest 必须保留生成编辑时取得的 `expected_sha256`；首次新建文件使用 `null`，文件数量与路径以本次真实清单为准。
-
-实际保存严格走公开 `edit/read` 取 CAS → `edit/preview` → `edit/apply` → `edit/read` 回读 SHA，保持原字节，不手工抄写大源码。字节已相同只回读、不重复写；写回执未知先实际回读，不自动重发 apply；`readback_verified_after_unconfirmed_apply` 只表示期望字节已核到，不能冒称收到成功写回执。`--out` 须为新目录；`partial` 失败保留真实回执供恢复；stdout 只给路径、计数与摘要。导入完成不含构建、冻结或实际装载含义。
-
-完整性、Guard 与平台原 scope 继续生效；普通管理会话可在现有用户授权内连续办理后续阶段，`plan_only` 与抽样专项仍到其原边界停止，不借 CLI 清空或扩大 scope。
+命令由统一环境定位 Node/Python，使用已核对的程序根、数据根和输入绝对路径，不临时 export 或调用内部实现。文本导入不处理二进制模型；模型工件沿原训练回收工具保存真实文件和摘要。完成导入不包含构建、装载或业务验收，后续继续现有 assets/build、platform_instances 与 research-eval 路径。

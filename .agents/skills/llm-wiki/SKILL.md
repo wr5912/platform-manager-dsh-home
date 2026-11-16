@@ -42,9 +42,9 @@ description: 将用户提供的少量文档或知识整理、补充、修订为�
 
 ## 按需补充给业务智能体
 
-只有用户明确要求集成，且已从请求或固定上下文确定目标 Agent 与版本时，才读取 [agent-maintenance](../agent-maintenance/SKILL.md) 核对当前目标与资产合同；改变业务回答、规则或工具行为时按 [harness-evolution](../harness-evolution/SKILL.md) 从固定父版派生 Candidate。已有授权和独立 Candidate 时续作，不重复创建，不直接改已发布或固定版本。
+只有用户明确要求集成，且已从请求或固定上下文确定目标 Agent 与来源时，才读取 [agent-maintenance](../agent-maintenance/SKILL.md) 核对当前目标与资产合同；改变业务回答、规则或工具行为时按 [harness-evolution](../harness-evolution/SKILL.md) 核对已有能力与回归，在授权业务仓当前工作树编辑，固定 Git tag/commit 只读。已有授权沿用当前目标，不重复创建资产。
 
-管理知识库可以共享阅读；业务运行知识按 Agent 和版本隔离。先读目标 `candidate/harness.yaml` 的 `loadable_assets.workspace`，并核对 `detail.declared.source_contract.workspace` 的真实装载路径；将选定 Wiki、必要可读文本及来源登记沿资产编辑合同独立物化到该工作区的 `knowledge/<topic>/`。当前布局为 `candidate/dsh/workspace/knowledge/<topic>/`，在 Runtime 中对应 `/work/harness/workspace/knowledge/<topic>/` 的只读资产。多个 Agent 可使用同一管理来源，各自保存固定副本；不使用指向共享可写目录的符号链接或全局引用。管理 Wiki 更新不自动同步到任何业务版本。
+管理知识库可以共享阅读；业务运行知识按 Agent 和固定来源隔离。先用 `business/detail` 核对 `business:<id>` 实际目录，并读取该业务仓 `agents/<id>/harness.yaml` 的 `loadable_assets.workspace`；将选定 Wiki、必要可读文本及来源登记按资产编辑合同保存到 `agents/<id>/dsh/workspace/knowledge/<topic>/`，在 Runtime 对应 `/work/harness/workspace/knowledge/<topic>/` 的只读资产。固定 Git tag/commit 只读，集成写入授权的当前工作树。多个 Agent 可用同一管理来源，各自保存运行必需的固定内容，不使用共享可写目录链接；管理 Wiki 更新不自动同步业务资产。
 
 业务副本的来源登记保留原件名称、版本和原件 SHA-256，说明原件由管理库保存；原始 PDF、DOCX 无需为了业务阅读一并部署。把所有运行时引用改为业务副本内可读文本的相对链接，保留页段定位，不留下指向宿主管理知识库的可操作链接，也不把提取文本的摘要当成原件摘要。用户明确要求业务携带二进制原件时，报告当前资产编辑接口不支持该导入的缺口。
 

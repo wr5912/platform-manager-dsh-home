@@ -1,33 +1,21 @@
 ---
 name: harness-evolution
-description: 通过平台工具创建、修改和审查 DSH Harness Experiment，固定 Baseline 与继承来源，保存假设、观察和真实 Decision；用于业务 Harness 的受控演进。
+description: 改进业务仓中的 DSH Harness，核对当前或固定 Git 来源，保留已有能力，通过资产编辑、真实评测和实例装载验证变化。
 ---
 
 # Harness 研究演进
 
-读取目标 `detail`，按需调用 `research/read-reference {topic:"controlled-improvement"}` 或 `inheritance-and-fusion`。仅修改已明确的业务对象；资料整理不因此创建新 Experiment。目录与记录合同见[仓库演进不变量](references/repository-invariants.md)。
+沿用用户选定的业务 Agent、来源与授权。当前工作树用 `business:<id>`，固定版本用 `business:<id>@<URL编码后的Git tag或commit>`；固定版本只读。需要判断方法时读取 `research/read-reference {topic:"controlled-improvement"}` 或 inheritance-and-fusion；目录职责见[仓库演进不变量](references/repository-invariants.md)。
 
-## 固定来源并创建
+## 定位与修改
 
-1. 确认实际问题、不能回归的能力和可证伪假设。读取目标 `detail`；确需盘点同 Agent 版本时再 `list` 并读相关详情与 Run。保留仍有效的主线和并行能力；未核对远端时不声明已覆盖远端分支。
-2. 已有版本使用 `detail.derivation.parent_ref` 和 `assets/read-fixed {agent_id,experiment_id,ref}` 核对所选完整 Candidate。`baseline_ref` 是比较祖先，不能代替当前父版；`repo_commit` 或更大编号不证明完整来源。固定引用缺失时说明待固定对象，不猜 SHA、不自动提交，也不退到旧版。
-3. 单一来源用 `create {agent_id,parent_experiment_id,parent_ref,research_question}`。已启用 m/f 治理时，默认从当前代创建同号 `f` 副本；可传 `version_number` 明确编号，随机后缀始终由平台生成。完整 ID 才是版本身份，不能因编号相同而复用另一个后缀的资产。历史代保持只读；同号融合与明确创建下一代按工作区 `AGENTS.md` 的版本边界办理，不自动升号。多来源使用融合技能。首次 Agent 用 `new` 创建首次 Experiment。版本身份以 `change.yaml` 为准，装载入口以版本内 `candidate/harness.yaml` 为准；无需另行登记。固定父版只读取同一提交内的资产。来源与 ID 以真实回执为准。
-4. 以创建回执的目标 ID 继续，用 `edit/read` 取得内容与摘要，在 `hypothesis.md` 记录假设、停止条件和来源取舍，再经 `edit/preview`、`edit/apply` 写入完整文本并回读。目标 `candidate/` 保存实际 Harness 修改，不复制 Runtime HOME、Session 或缓存。摘要冲突先重读；缺完整来源或不支持的文件操作停在缺口，不提交空文件。
+1. 用 `business/detail {source}` 读取真实资产路径、提交、dirty 状态与文件清单；读取目标文件用 `business/read` 或 `edit/read`。核对实际问题、不能回归的能力和可证伪假设，只读有关来源与 Run，不按编号或程序 HEAD 猜业务版本。
+2. 在授权的当前工作树修改。固定来源作为比较和复用依据，不能向只读 tag 写入；需要从固定来源恢复内容时，完整读取该来源，再与当前目标逐文件核对。未提交修改可以继续使用，不强制提交或创建版本副本。新 Agent 按 `agent-maintenance` 在业务仓创建原生资产。
+3. `edit/read {experiment_id:"business:<id>",path}` 取得正文与 SHA；`edit/preview`、`edit/apply` 使用同一目标及 `edits:[{path,content,expected_sha256}]`。新文件先确认不存在，摘要为 null；移动提供 move_to 与完整正文，删除使用 content:null 和原摘要。引用修改同批办理，冲突先重新读取。
+4. 插件修改按需使用 `dsh-business-plugin-development`。必要时通过 `assets/dependencies/prepare`、`assets/build-preview`、`assets/build` 准备已有声明的依赖与 Managed 制品，再核对真实回执。不复制 Runtime HOME、Session 或缓存，不修改平台程序代替业务实现。
 
-`assets/diff` 与其他 Experiment 的比较针对当前工作树，不能冒称固定提交。`assets/read-fixed` 的脱敏、截断预览或二进制元数据也不能当作完整正文迁移。
+## 评测与结论
 
-修改涉及业务插件代码、配置或装配时，按需使用 `dsh-business-plugin-development` 复用对应版本的官方 Skill，继续使用本次 Candidate 和来源。该技能不另建 Experiment，不把管理助手当前 Profile 当作目标业务环境；完成后回到下述评测与结论。
+按 `research-eval` 选择实际 Case、比较环境与新 Run。业务 `evaluation.md` 是当前用例唯一来源，Run 冻结本次来源和输入；同次比较不改变口径，历史结果不改写。构建通过不表示实例已加载，按 `platform_instances` 的资产状态与重载回执核对，再验证新 Session 的实际行为。
 
-## 评测与决定
-
-以 `research-eval` 固定 Case 和比较环境，用真实新 Run 检查修改与必要回归；该技能已加载就继续相应步骤，评测结束回到下述保存结论，不重新创建 Experiment。当前共用 `evaluation.md` 的修改仅影响后续 Run；旧 Run 按自身冻结口径解释，缺少冻结材料时保留未知。检查配置、制品与实际加载；旧来源测试不能证明目标集成。Decision 前只核对本次相关并行来源的新增变化，说明取舍；需要跨来源能力时使用 `harness-experiment-fusion`。
-
-调用 `research/validate {experiment_id}` 检查确定性合同。它不能证明业务语义正确，也不执行任意资产脚本。验证失败先修正目标资料或说明阻塞，不通过安装依赖、执行程序内部脚本绕过。
-
-## 记录观察与结论
-
-公开交接：接收既定 Experiment、真实 Run 与本轮观察/结论，完成保存与回读后返回原任务；未知写入先查原结果，不重新创建或启动研究。
-
-按[观察与 Decision 保存合同](references/decision-update.md)保存本轮证据与结论，使用当前摘要更新并回读。评测后继续当前目标，不为保存结论重新创建 Experiment；查询任务仅报告，不额外写入。
-
-固定 Git 来源的派生通过平台公开入口办理；Research Release 当前只有仓库校验合同，创建、发布和 `release:<id>` 运行映射尚未闭合，不把静态目录或校验通过写成已发布。管理助手可以提供可选的语义协助，但资产、实例和状态也必须能由平台 GUI/CLI 直接完成。`adopt` 仍不等于实例切换或生产发布。
+需要保存本轮观察时按[观察与结论](references/decision-update.md)维护所属业务文档，引用实际 Run、反例、回归、限制与下一步；只查询时仅报告。结论可为 adopt、continue、reject 或 inconclusive，说明证据与适用范围，不把采纳意见写成实例切换或发布成功。

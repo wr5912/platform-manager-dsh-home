@@ -1,6 +1,6 @@
 interface:
   display_name: "Harness 研究演进"
-  short_description: "以轻量 Experiment 演进并复现 DSH Harness"
-  default_prompt: "使用 $harness-evolution 以 Research Mode 创建或修改这个 Harness Experiment。"
+  short_description: "改进业务 Harness 并用真实 Run 核对效果"
+  default_prompt: "使用 $harness-evolution 核对业务来源，按当前资产编辑合同改进这个 Harness 并验证效果。"
 policy:
   allow_implicit_invocation: true

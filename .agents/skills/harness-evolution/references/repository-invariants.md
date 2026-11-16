@@ -1,61 +1,23 @@
-# 仓库演进不变量
+# 业务资产与研究记录
 
-需要理解资产身份、记录结构或历史 Release 时按需查阅。当前业务执行以对应 Skill 和平台返回的合同为准，不要求每次任务通读历史资产合同。
+当前业务执行以所属 Skill 与平台公开合同为准。业务资产、运行配置和冻结事实分别维护，不要求普通编辑先创建研究版本或提交 Git。
 
-## 生命周期与身份
+## 身份与目录
 
-```text
-Baseline 引用 → Experiment（含 Candidate）→ Evaluation → Decision
-                                                        └→ 可选 Research Release
-```
+- Agent ID、Skill 名及普通目录使用小写 kebab-case。
+- 业务仓 agents/<id>/harness.yaml 声明唯一当前 Harness，evaluation.md 维护 Case；dsh/workspace、dsh/presets、dsh/managed 保存原生运行资产。
+- 当前来源为 business:<id>，固定 Git tag/commit 使用 @ 引用且只读；已保存 dirty 工作树可以使用，实际内容由 Run 与实例回执记录，不能冒称已固定提交。
+- 数据仓保存来源登记、运行配置与 evolution/runs/run-<UUIDv4>/，不另建当前 Candidate、versions 或重复 Baseline 树。
+- 新 Agent 用原生文件工具在授权业务仓创建完整资产，登记 manifest.yaml；存在 release-manifest.yaml 时同步 active_agent_ids。已有 Harness 通过当前编辑、构建、评测和实例合同维护。
+- 程序源码、Runtime、管理 HOME、会话和缓存不复制为业务资产。仅创建本次确有内容的文件，空报告不证明完成。
 
-- Agent ID、技能名和普通目录使用小写 kebab-case。
-- 新 Experiment 使用 `EXP-<agent-id>-NNN-r<12位随机十六进制>`；旧编号实验保留原名。
-- Run 使用 `run-<UUIDv4>`，每次执行独立保存，封存后不覆盖。
-- Research Release 使用 `<agent-id>-v<semver>`，只能保存值得独立复用的研究版本。
-- Baseline 使用 `git:<40 位 commit>`、`release:<id>` 或 `none:first-experiment` 引用，不复制 `evolution/baselines/`。
-- 不维护 `agents/<agent-id>/current/`；需要复现时直接引用具体 Git 提交或 Research Release。
+## Run 与结论
 
-## 目录职责
+Run 以自身 run.yaml/run.json、inputs.lock.json、结果和真实证据记录来源、用例、模型、环境、执行与判断。历史缺失事实保持未知，不从当前 Harness 或目录反推历史来源。重新执行使用新 Run，封存后不覆盖原记录。
 
-- `agents/<agent-id>/`：Agent 的研究入口；`evaluation.md` 集中维护业务 Case 的名称、用户输入和预期，不另建重叠的需求、任务或验收投影。
-- `evolution/experiments/<id>/`：假设、Candidate、Evaluation、Run 和 Decision。
-- `evolution/history/imports/`：外部来源原貌、清洗材料与处置记录；不作为现行 Harness 的第二份可编辑事实源。
-- `releases/`：自包含、不可变、可校验的 Research Release；不表示生产可用。
-- 程序仓库 `runtime/`：DSH 兼容与研究工具实现，不属于本数据仓库，不复制 Runtime 源码或私有运行数据。
+每条结果保留 run_id、trial_id、input_id、execution_status、verdict、observation 与 evidence_ref。execution_status 表示执行完成情况，verdict 表示证据判断；error/skipped 对应 inconclusive，错误需说明实际原因。Run 锁定的全部 Case 完成才可封存为 completed，completed 不等于业务 passed。
 
-只有出现真实内容时才创建目录。空文件、占位报告、纯 TODO 和 `.gitkeep` 不能证明资产完整。
-
-## Experiment 最小合同
-
-`change.yaml` 必须包含：
-
-- `schema_version`
-- 与目录一致的 `experiment_id`
-- 与名称一致的 `agent_id`
-- 合法 `baseline_ref`
-- `status: active|completed`
-- 完成时的 `outcome: adopt|continue|reject|inconclusive`
-
-`hypothesis.md` 和 `candidate/` 应有与当前实验相关的实质内容。业务 Case 写在 Agent 的 `evaluation.md`，运行时显式选择，不得在 Experiment 下另存 `evaluation/plan.yaml`；`evaluation/` 只按需保存工具、证据或总结。完成的 Experiment 还必须有实质 `decision.md`，写清结果、依据、回归、限制和下一步。研究失败或证据不足是合法结果，不要求生成 Release。
-
-## Run 最小合同
-
-Run 的 `evaluation_ref` 指向 `agents/<agent-id>/evaluation.md`，输入锁保存所选 Case 的完整快照与摘要。它们是不可编辑的执行事实，不是另一份评测计划。Run 还记录实际来源、Git 提交及 dirty 状态、必要资产摘要和逐项观察。每条结果至少包含：
-
-```json
-{
-  "run_id": "run-<UUIDv4>",
-  "trial_id": "本次 Run 内唯一 ID",
-  "input_id": "输入或场景标识",
-  "execution_status": "completed|error|skipped",
-  "verdict": "passed|failed|inconclusive",
-  "observation": "实际观察",
-  "evidence_ref": "Run 内的非空证据相对路径"
-}
-```
-
-`input_id` 必须属于该 Run 锁定的全部选择或非空子集。`execution_status` 与 `verdict` 分开记录；`error` 和 `skipped` 只能是 `inconclusive`，`error` 需要 `failure_reason`。以 `completed` 封存时必须覆盖全部锁定 Case。分数、耗时、Token、成本和模型按研究需要增加，不设固定 17 列合同。
+需要保存观察时维护所属业务文档，引用实际 Run、反例、回归与限制；adopt、continue、reject、inconclusive 是结论，不代表 Git 合并、实例切换或发布。未知资源不补零，不设固定 Case 数或生产门槛。
 
 ## Research Release 历史资产合同
 
