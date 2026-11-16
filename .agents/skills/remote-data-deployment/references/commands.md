@@ -37,4 +37,4 @@ hep_update_args+=(--minimal-data)
 
 ## 指定实例的业务 source 更新
 
-旧 Experiment/Candidate 更新入口已移除。业务实例更新必须使用程序仓库当前支持的 `business:<agent-id>@<commit>` source contract，通过平台 pack/update 合同生成并校验完整业务快照；本 Skill 不再构造 `experimentId`、Candidate 相对路径或旧 `agent-update` 清单。
+在目标五仓工作区的业务仓保存当前 `business:<agent-id>` 文件，或使用 `platform/hep agent edit/read`、`edit/preview`、`edit/apply`；通过 `--input <JSON文件>` 传入 `source_id`、Agent 根下的相对路径和真实原文件摘要。需要编译的 Managed TypeScript 使用 `assets/build-preview`、`assets/build`，其 `experiment_id` 填业务 selector。保存后以 `platform/hep instance reload <实例名> --dry-run` 获取来源和运行代次摘要，再按同一命令的摘要参数重载，读回实际装载回执并验证行为。固定 `business:<agent-id>@<tag或commit>` 来源只读，新版本须选择新的来源创建或重新创建实例；跨主机完整资产交付使用平台 ZIP 全量更新。
