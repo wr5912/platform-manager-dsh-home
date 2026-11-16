@@ -11,6 +11,8 @@ description: 整理智能体版本用途和特性，维护已授权目标的说�
 
 创建或改变 active 状态时，同步业务仓已有 `release-manifest.yaml` 的 active_agent_ids 与 manifest.yaml；该登记保证当前资产与打包选择一致，不表示已经发布。
 
+业务环境变量合同从选定 Harness 自动生成：公开名称、默认值与填写说明只维护 `dsh/workspace/deployment.env.example`，凭据名维护 `harness.yaml` 的 `credential_environment_keys`。平台实例与独立包共用合同，无需另改平台变量清单；平台现场覆盖写数据仓 `config/deployment.yaml` 的 `runtimeEnvironment`，独立包写 `config/deployment.env`，显式空值保留。增删声明后重载平台实例或重新导出独立包；已导出的包保持冻结声明。Harness 参数变更复用标准 Runtime 镜像。
+
 托管与独立实例共用原生 DSH MCP 发现、调用、资源与重连机制。托管实例按服务 ID 动态取得平台当前连接参数和凭据，宿主回环服务经平台 MCP 出口访问，不把现场 IP 写死在 Harness 或手工改托管 HOME。独立包使用目标环境本地配置；分组 Token 由平台生成，保存分组即可取得连接。通知订阅等公开参数从 `dsh/workspace/deployment.env.example` 进入包内 `config/deployment.env`；修改后执行 `./standalone_agent_launcher restart`，模型与 MCP 连接及凭据使用包内 configure 入口。网络安全运营专家可在同一文件设置 `THREAT_ANALYSIS_MODEL_PROVIDER`、`THREAT_ANALYSIS_MODEL` 和可选 `THREAT_ANALYSIS_REASONING_EFFORT`；留空继承主模型，重启后用于新任务。JSON 使用 UTF-8、两空格缩进和可读中文。通知卡片分别核对订阅、权威状态、填入输入框、已有草稿保留、状态颜色及没有自动发送，页面加载不能替代实际交互。
 
 当前状态与历史观察分别判断。必要时沿后续证据引用核对当前实例；历史待办不证明现在仍未完成。隔离工作区的验收记录可支持其说明的事实，但不能证明正式实例已装载同一资产。需要方法时按需读取 `research/read-reference` 的 controlled-improvement 或 inheritance-and-fusion。
