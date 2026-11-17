@@ -26,19 +26,6 @@
   config:
     projectRootMarkers: [ ".manager-workspace", ".git" ]
 
-- id: llm-openai-codex
-  config:
-    enableProxy: true
-    proxyUrl: http://127.0.0.1:7897
-    retryPolicy:
-      mode: normal
-      maxRetries: 10
-      retryableCodes:
-        - EMPTY_RESPONSE
-        - RATE_LIMIT
-        - SERVER
-        - TIMEOUT
-        - TRANSPORT
 - id: ui-theme
   name: "@deepseek-ai/dsh-client-ui-theme"
   config:
