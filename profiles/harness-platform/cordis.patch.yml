@@ -2,7 +2,7 @@
   name: "@deepseek-ai/dsh-llm-pi-ai"
   config:
     providers:
-      local:
+      local-qwen:
         displayName: 业务模型
         api: openai-completions
         baseURL: http://172.16.138.233:8000/v1
@@ -33,6 +33,5 @@
 - id: agent-default-model
   name: "@deepseek-ai/dsh-agent-default-model"
   config:
-    provider: deepseek-official
-    model: deepseek-flash
-    reasoningEffort: low
+    provider: local-qwen
+    model: Qwen3.8-27B
