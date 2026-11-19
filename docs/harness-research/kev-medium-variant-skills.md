@@ -62,7 +62,7 @@ KEV 套件保留 5 个顶层入口；与已有 compute-variant-research、decisi
 6. report_only 校准只产报告，不改温度；workload_heldout 是需明确选择和评审的业务分布内校准口径，原生写回选项及偏差完整说明在训练技能参考中。不能将业务留出集说成通用发布的分布外校准证据。
 7. 获授权后使用真实推理服务/工具合同接入所属业务 Harness，LangGraph 工具参数与回退由代码承担；分别核对当前编辑、构建、实际重载和新两侧 Run 的效果与资源，不以配置或训练完成代替业务结论。
 
-具体步骤与示例见 [.agents/skills/kev-training/SKILL.md](../../.agents/skills/kev-training/SKILL.md)。外部数据目录、模型缓存、训练日志和权重放忽略的本地状态或独立训练环境；不要提交凭据、真实会话附件或模型权重。
+具体步骤与示例见 [.agents/skills/kev-training/SKILL.md](../../.agents/skills/kev-training/SKILL.md)。外部数据目录、模型缓存、训练日志和权重放忽略的本地状态或独立训练环境；不要提交真实会话附件或模型权重。
 
 上述是原生数据配方。只有业务问题、Jev/TypeSafe 调用或标注表时，可从 kev-training 的官方 Modal 工作负载路径扫描、转换、规划或生成数据，再按所选环境继续；不强制先满足原生四分区准备器。已有 checkpoint 只需部署或停服时直接使用 kev-deploy，不重新训练。两条配方的数据语义、候选增强和执行副作用分别核对。
 

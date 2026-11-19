@@ -13,7 +13,7 @@ description: 开发和优化 MCP 工具组合编排，维护原生流程资产�
 
 设计用户流程时，按[用例场景覆盖检查](../evaluation-review/SKILL.md#先审整套再写单条)核对从咨询、发现对象到后续任务的衔接，复用当前真实查询、分析与原结果；输入完整时直接走必要步骤。方案引用 Agent 的 evaluation.md 中的 Case，不复制用例；能力缺口不虚构接口，不用本地业务台账或额外确认层代替上游合同。
 
-连接及分组公开配置由数据根 `mcp/manager.json` 维护，分组 Token 和出站凭据位于本地忽略文件 `mcp/.local/credentials/credentials.json`；草稿与发布快照由数据根 `mcp/compositions.json`，各组合定义位于 `mcp/compositions/<id>/composition.json` 维护。页面与本技能使用同一配置读取和保存服务；本技能只提交非敏感配置修改，凭据通过 MCP 管理页面维护。修改前读取 `configuration` 回执中的 `revision`，保存冲突时重新读取并核对差异，不覆盖并行修改。不另存连接、凭据或编排副本。
+连接、服务授权和分组发布凭据共同由数据根 `mcp/manager.json` 维护。草稿与发布快照由数据根 `mcp/compositions.json` 登记，各组合定义位于 `mcp/compositions/<id>/composition.json`。页面与本技能使用同一配置读取和保存服务。修改前读取 `configuration` 回执中的 `revision`，保存冲突时重新读取并核对差异，保留并行修改。
 
 分组 Token 由平台自动生成，保存分组即可取得连接，不让用户为普通分组创建额外密钥。上游凭据按服务真实要求配置；可选凭据留空不是连接缺陷，只有服务明确要求授权且缺少必要凭据时才提示补充。
 
