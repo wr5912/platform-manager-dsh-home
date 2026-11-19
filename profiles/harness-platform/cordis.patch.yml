@@ -33,5 +33,21 @@
 - id: agent-default-model
   name: "@deepseek-ai/dsh-agent-default-model"
   config:
-    provider: local-qwen
-    model: Qwen3.8-27B
+    provider: openai-codex
+    model: gpt-6.1-sol
+    reasoningEffort: high
+- id: locale
+  name: "@deepseek-ai/dsh-client-locale"
+  config:
+    preference: zh
+- id: llm-openai-codex
+  name: dsh-codex-connect
+  config:
+    enableProxy: true
+    enableSearch: false
+    enableReserveFallback: false
+    enableNativeCompaction: false
+    enableImageTool: false
+    enableImageGeneration: false
+    enableAutoReview: false
+    proxyUrl: http://127.0.0.1:7897
