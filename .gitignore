@@ -13,21 +13,9 @@ indexes/
 __pycache__/
 *.py[cod]
 
-# Credentials and local settings
-.credentials.yaml
-.credentials.*
-.openai-codex-auth.json*
 .openai-codex-trusted-origins.json
 .anonymous-user-id
 settings.yaml.imported
-.env
-.env.*
-*.secret
-*.secrets
-*.token
-*.key
-*.pem
-*.llm-api-key
 
 # Generated profile links and platform overlays
 profiles/**/node_modules/
@@ -36,10 +24,6 @@ profiles/harness-platform/harness-platform.patch.yml
 profiles/harness-platform/harness-platform.sources.json
 .local/
 backups/
-credentials.json
-credentials.*
-profiles/**/credentials/
-profiles/**/secrets/
 *.log
 profiles/web/
 profiles/web-source/
