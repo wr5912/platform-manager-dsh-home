@@ -33,9 +33,8 @@
 - id: agent-default-model
   name: "@deepseek-ai/dsh-agent-default-model"
   config:
-    provider: openai-codex
-    model: gpt-6.1-sol
-    reasoningEffort: xhigh
+    provider: local-qwen
+    model: Qwen3.8-27B
 - id: locale
   name: "@deepseek-ai/dsh-client-locale"
   config:

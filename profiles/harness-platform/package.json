@@ -2,7 +2,6 @@
   "name": "dsh-profile-harness-platform",
   "private": true,
   "dependencies": {
-    "dsh-codex-connect": "github:franksong2702/dsh-codex-connect",
     "dsh-think-zh": "github:Len7183/DSH-Think-zh#2ba0a1e338410b44c07f221087907e210ad65b59"
   },
   "dsh": {
@@ -11,8 +10,7 @@
         "@deepseek-ai/dsh-base",
         "@deepseek-ai/dsh-web-app",
         "@harness-engineering-platform/harness-platform",
-        "dsh-think-zh",
-        "dsh-codex-connect"
+        "dsh-think-zh"
       ],
       "patchReload": "startup"
     }
