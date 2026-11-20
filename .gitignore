@@ -13,6 +13,7 @@ indexes/
 __pycache__/
 *.py[cod]
 
+/.openai-codex-auth.json*
 .openai-codex-trusted-origins.json
 .anonymous-user-id
 settings.yaml.imported

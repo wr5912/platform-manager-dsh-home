@@ -34,7 +34,7 @@
   name: "@deepseek-ai/dsh-agent-default-model"
   config:
     provider: openai-codex
-    model: gpt-6.2-sol
+    model: gpt-6.1-sol
     reasoningEffort: xhigh
 - id: locale
   name: "@deepseek-ai/dsh-client-locale"
