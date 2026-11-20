@@ -33,9 +33,13 @@
 - id: agent-default-model
   name: "@deepseek-ai/dsh-agent-default-model"
   config:
-    provider: local-qwen
-    model: Qwen3.8-27B
+    provider: deepseek-official
+    model: deepseek-flash
 - id: locale
   name: "@deepseek-ai/dsh-client-locale"
   config:
     preference: zh
+- id: dsh-think-zh
+  name: dsh-think-zh
+  config:
+    thinkingLanguage: zh
