@@ -34,20 +34,9 @@
   name: "@deepseek-ai/dsh-agent-default-model"
   config:
     provider: openai-codex
-    model: gpt-6.1-sol
-    reasoningEffort: high
+    model: gpt-6.2-sol
+    reasoningEffort: xhigh
 - id: locale
   name: "@deepseek-ai/dsh-client-locale"
   config:
     preference: zh
-- id: llm-openai-codex
-  name: dsh-codex-connect
-  config:
-    enableProxy: true
-    enableSearch: false
-    enableReserveFallback: false
-    enableNativeCompaction: false
-    enableImageTool: false
-    enableImageGeneration: false
-    enableAutoReview: false
-    proxyUrl: http://127.0.0.1:7897
