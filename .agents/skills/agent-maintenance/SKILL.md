@@ -39,6 +39,7 @@ description: 整理智能体版本用途和特性，维护已授权目标的说�
 | 新建智能体 | ID 为小写 kebab-case；在授权业务仓用原生文件工具创建 `agents/<id>/harness.yaml`、`evaluation.md` 和 `dsh/workspace`、`dsh/presets`、`dsh/managed`，同步根 `manifest.yaml` 的真实登记，不覆盖同名 Agent | 在实际业务仓通过 `tools/with-env.sh python3 tools/check_agents.py` 核对，再用 `business/detail` 回读来源、角色和用例；创建不包含实例启动或业务验收 |
 | 查看实例 | `platform_instances` 的 `list`、`detail`；排障再按需 `logs`、`url` | 核对实际状态、来源、真实入口及 `asset_status`；`pending_reload` 表示资产变化，`unknown` 表示缺少当前运行代次的加载证据，不能当作已生效；不通过 shell 操作 Docker |
 | 实例变更 | 直接调用 `run {name,operation,source?,port?}`，批量用 `batch`；`operation:"reload"` 用于使当前来源资产生效，平台内部预览并核对来源、模型、资产摘要及运行代次，按原生访问策略执行。用户仅要求查看影响时使用 `preview` 或 `batch-preview`，到此结束 | 回读每项状态、来源及实际加载回执；保留 HOME、Session、端口、模型和网关入口。停止或外部实例按回执跳过；部分失败逐项说明，结果未知先查状态，不自动重放。重新执行业务验收须属于用户明确要求 |
+| 删除托管实例 | 调用 `platform_instances` 的 `run {name,operation:"delete"}`，平台按当前登记的实例代次执行 | 核对实例登记、专属 HOME、会话及目录已删除。删除未完成时按回执重试同一实例。共享 Harness 与评测 Run 继续从原入口读取 |
 | 编辑资产 | 对授权当前工作树，`edit/read {experiment_id:"business:<id>",path}` 得到正文和摘要，按同一目标 `edit/preview` 后 `edit/apply`，每项为 `{path,content,expected_sha256}`；行为变化按 `harness-evolution` 核对回归，固定 tag/commit 只读 | 提交完整文本并回读；新文件先确认不存在再用 null 摘要；移动使用 move_to，删除使用 content:null，引用同批更新 |
 | 修改用例 | `cases/read` 后 `cases/update {experiment_id,case_id,title,inputs,expected_behavior,fast,expected_sha256}` | 回读该 Case，比较期间不改口径 |
 | 新增用例 | `cases/create-context` 取模板与所选场景的编号建议，按上述编号规则办理；必要时 `cases/from-run {experiment_id,run_id,case_id}` 取冻结输入，再 `cases/create-preview` 与 `cases/create` | 回读新增 Case；预期由需求确定，不将失败输出改成标准答案 |
