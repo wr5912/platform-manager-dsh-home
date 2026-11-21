@@ -33,8 +33,9 @@
 - id: agent-default-model
   name: "@deepseek-ai/dsh-agent-default-model"
   config:
-    provider: deepseek-official
-    model: deepseek-flash
+    provider: codex
+    model: gpt-6.2-sol
+    reasoningEffort: max
 - id: locale
   name: "@deepseek-ai/dsh-client-locale"
   config:
@@ -43,3 +44,6 @@
   name: dsh-think-zh
   config:
     thinkingLanguage: zh
+- id: llm-subscriptions
+  config:
+    providers: [ codex ]

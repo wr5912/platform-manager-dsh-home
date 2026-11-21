@@ -7,3 +7,6 @@ autoInstallPeers: false
 allowBuilds:
   "@google/genai": false
   protobufjs: false
+
+minimumReleaseAgeExclude:
+  - dsh-plugin-subscriptions@0.9.14

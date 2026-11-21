@@ -7,6 +7,7 @@ runtime/
 state/
 attachments/
 storages/
+/plugins/subscriptions/
 indexes/
 *.sqlite
 *.sqlite3
