@@ -12,6 +12,10 @@
 
 原生 bundle 从匹配的 DSH 安装解析；平台插件及路径 Overlay 由 `prepare` 构建，生成文件不绑定源仓。用户自行创建的 `web`、`web-source` Profile 可共存，平台不依赖它们。
 
+`harness-platform` 默认启用 `dsh-plugin-subscriptions`，由 DSH 原生 Profile 装载。Profile 锁定 npm 发布版本，离线安装包携带打包时已安装的依赖。安装时订阅依赖不可取得，或 DSH 启动时跳过订阅 bundle，管理助手仍使用默认模型 `deepseek-official/deepseek-flash`。 [DSH 插件打包与发布规范](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/user/develop/basic/publish.zh.md)
+
+可在 DSH 设置中授权 Codex，随后在模型选择器中选用其订阅模型。订阅查询和请求失败由订阅入口或相应会话显示，已选用 Codex 的会话可以手动切换模型。新安装的订阅授权由现场配置，部署更新保留目标 HOME 中已有的授权状态。
+
 含数据的部署包保存现场配置和完整 HOME 状态；更新保留目标现场状态。会话、附件、反馈、身份及凭据需要随包备份和恢复，日志、缓存与依赖可重建。部署包含秘密，应作为私有运行制品保存。
 
 当前 Profile 要求 DSH `0.2.2-rc.2`，版本以平台程序 `runtime/adapters/dsh-container/source.lock.json` 为准。

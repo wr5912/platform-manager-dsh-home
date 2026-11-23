@@ -8,12 +8,13 @@ importers:
 
   .:
     dependencies:
-      dsh-plugin-subscriptions:
-        specifier: 0.9.14
-        version: 0.9.14
       dsh-think-zh:
         specifier: github:Len7183/DSH-Think-zh#2ba0a1e338410b44c07f221087907e210ad65b59
         version: https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59(@deepseek-ai/schemastery@3.18.4)
+    optionalDependencies:
+      dsh-plugin-subscriptions:
+        specifier: 0.9.14
+        version: 0.9.14
 
 packages:
 
@@ -26,16 +27,6 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  dsh-think-zh@https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59:
-    resolution: {gitHosted: true, integrity: sha512-TZTkwd0pqVMWW1c4xQr84aTsQC30V+Lyx0USDFKwe7OIaPiiEjfcAA4zRsNjU0dSTExAZkl+rbb3TX8slPzTcw==, tarball: https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59}
-    version: 1.1.1
-    engines: {node: '>=22.19'}
-    peerDependencies:
-      '@deepseek-ai/schemastery': '>=3.18.3'
-    peerDependenciesMeta:
-      '@deepseek-ai/schemastery':
-        optional: true
-
   dsh-plugin-subscriptions@0.9.14:
     resolution: {integrity: sha512-CxWi3GUj11Hnjpvz6t00ByT/IZ4vR+JJ1SQHBQx1A2HsRGeOzfUjbVvdxIsieoJcbWaqYlKi4mvr/PgNSCAE6w==}
     peerDependencies:
@@ -46,6 +37,16 @@ packages:
       '@deepseek-ai/dsh-tools': '>=0.2.0-rc.2 || >=0.2.1-0 || >=0.2.2-0'
       '@deepseek-ai/dsh-web': '>=0.2.0-rc.2 || >=0.2.1-0 || >=0.2.2-0'
       '@deepseek-ai/schemastery': ^3.18.1 || 3.18.5-alpha.1 || 3.18.5-alpha.2
+
+  dsh-think-zh@https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59:
+    resolution: {gitHosted: true, integrity: sha512-TZTkwd0pqVMWW1c4xQr84aTsQC30V+Lyx0USDFKwe7OIaPiiEjfcAA4zRsNjU0dSTExAZkl+rbb3TX8slPzTcw==, tarball: https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59}
+    version: 1.1.1
+    engines: {node: '>=22.19'}
+    peerDependencies:
+      '@deepseek-ai/schemastery': '>=3.18.3'
+    peerDependenciesMeta:
+      '@deepseek-ai/schemastery':
+        optional: true
 
   undici@7.30.2:
     resolution: {integrity: sha512-mLyPQnHwUxaM/rideoK/+KL8DaAJLRl4aBCfmX444aCSLnIaomqPLtNRe2jdCYcsk5wZzXrDIQC8ZeYNRAYyIA==}
@@ -68,9 +69,11 @@ snapshots:
   dsh-plugin-subscriptions@0.9.14:
     dependencies:
       undici: 7.30.2
+    optional: true
 
   dsh-think-zh@https://codeload.github.com/Len7183/DSH-Think-zh/tar.gz/2ba0a1e338410b44c07f221087907e210ad65b59(@deepseek-ai/schemastery@3.18.4):
     optionalDependencies:
       '@deepseek-ai/schemastery': 3.18.4
 
-  undici@7.30.2: {}
+  undici@7.30.2:
+    optional: true

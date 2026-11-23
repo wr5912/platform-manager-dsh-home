@@ -2,8 +2,10 @@
   "name": "dsh-profile-harness-platform",
   "private": true,
   "dependencies": {
-    "dsh-plugin-subscriptions": "0.9.14",
     "dsh-think-zh": "github:Len7183/DSH-Think-zh#2ba0a1e338410b44c07f221087907e210ad65b59"
+  },
+  "optionalDependencies": {
+    "dsh-plugin-subscriptions": "0.9.14"
   },
   "dsh": {
     "profile": {
